@@ -1,0 +1,249 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  --background: #1D1616;
+  --foreground: #EEEEEE;
+  --card: #1D1616;
+  --card-foreground: #EEEEEE;
+  --popover: #1D1616;
+  --popover-foreground: #EEEEEE;
+  --primary: #EEEEEE;
+  --primary-foreground: #1D1616;
+  --secondary: #BE1616;
+  --secondary-foreground: #EEEEEE;
+  --muted: #BE1616;
+  --muted-foreground: #EEEEEE;
+  --accent: #DB4040;
+  --accent-foreground: #EEEEEE;
+  --destructive: #BE1616;
+  --destructive-foreground: #EEEEEE;
+  --border: #BE1616;
+  --input: transparent;
+  --input-background: #1D1616;
+  --switch-background: #BE1616;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #DB4040;
+  --chart-1: #BE1616;
+  --chart-2: #DB4040;
+  --chart-3: #EEEEEE;
+  --chart-4: #BE1616;
+  --chart-5: #DB4040;
+  --radius: 0.625rem;
+  --sidebar: #1D1616;
+  --sidebar-foreground: #EEEEEE;
+  --sidebar-primary: #BE1616;
+  --sidebar-primary-foreground: #EEEEEE;
+  --sidebar-accent: #DB4040;
+  --sidebar-accent-foreground: #EEEEEE;
+  --sidebar-border: #BE1616;
+  --sidebar-ring: #DB4040;
+}
+
+.dark {
+  --background: #1D1616;
+  --foreground: #EEEEEE;
+  --card: #1D1616;
+  --card-foreground: #EEEEEE;
+  --popover: #1D1616;
+  --popover-foreground: #EEEEEE;
+  --primary: #EEEEEE;
+  --primary-foreground: #1D1616;
+  --secondary: #BE1616;
+  --secondary-foreground: #EEEEEE;
+  --muted: #BE1616;
+  --muted-foreground: #EEEEEE;
+  --accent: #DB4040;
+  --accent-foreground: #EEEEEE;
+  --destructive: #BE1616;
+  --destructive-foreground: #EEEEEE;
+  --border: #BE1616;
+  --input: #1D1616;
+  --ring: #DB4040;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: #BE1616;
+  --chart-2: #DB4040;
+  --chart-3: #EEEEEE;
+  --chart-4: #BE1616;
+  --chart-5: #DB4040;
+  --sidebar: #1D1616;
+  --sidebar-foreground: #EEEEEE;
+  --sidebar-primary: #BE1616;
+  --sidebar-primary-foreground: #EEEEEE;
+  --sidebar-accent: #DB4040;
+  --sidebar-accent-foreground: #EEEEEE;
+  --sidebar-border: #BE1616;
+  --sidebar-ring: #DB4040;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Aeonik', 'Arial', 'Helvetica', sans-serif;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-family: 'Josefin Sans', 'Arial', 'Helvetica', sans-serif;
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      line-height: 1.5;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    h2 {
+      font-family: 'Josefin Sans', 'Arial', 'Helvetica', sans-serif;
+      font-size: var(--text-xl);
+      font-weight: 700;
+      line-height: 1.5;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    h3 {
+      font-family: 'Josefin Sans', 'Arial', 'Helvetica', sans-serif;
+      font-size: var(--text-lg);
+      font-weight: 600;
+      line-height: 1.5;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    h4 {
+      font-family: 'Josefin Sans', 'Arial', 'Helvetica', sans-serif;
+      font-size: var(--text-base);
+      font-weight: 600;
+      line-height: 1.5;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    p {
+      font-family: 'Aeonik', 'Arial', 'Helvetica', sans-serif;
+      font-size: var(--text-base);
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    label {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    button {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    input {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+  font-family: 'Aeonik', 'Arial', 'Helvetica', sans-serif;
+}
+
+/* Smooth dark mode transition */
+:root {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
+}
+
+/* Accent colors */
+:root {
+  --accent-blue: #667eea;
+  --accent-purple: #764ba2;
+  --accent-pink: #f857a6;
+  --accent-cyan: #4facfe;
+}
+
+.dark {
+  --accent-blue: #818cf8;
+  --accent-purple: #a78bfa;
+  --accent-pink: #fb7185;
+  --accent-cyan: #22d3ee;
+}
+

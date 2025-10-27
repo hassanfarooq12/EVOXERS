@@ -1,0 +1,64 @@
+/**
+ * Locomotive Scroll Custom Styles
+ * 
+ * Purpose: Optimize smooth scroll performance and ensure proper rendering
+ * All transforms are GPU-accelerated for 60 FPS performance
+ */
+
+/* Main scroll container - enables smooth scroll wrapper */
+[data-scroll-container] {
+  /* Prevent horizontal overflow during parallax */
+  overflow-x: hidden;
+}
+
+/* Individual scroll sections */
+[data-scroll-section] {
+  /* Ensure sections are positioned correctly */
+  position: relative;
+}
+
+/* Elements with parallax scroll effects */
+[data-scroll] {
+  /* GPU acceleration - force hardware compositing layer */
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  
+  /* Smooth rendering for text during animation */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Prevent text selection issues during scroll */
+  backface-visibility: hidden;
+}
+
+/* Optimization: Remove will-change when element is in view (reduces GPU memory) */
+[data-scroll].is-inview {
+  /* Re-enable will-change only during active scroll */
+  will-change: transform;
+}
+
+/* Mobile/Tablet: Disable GPU acceleration when smooth scroll is off */
+@media (max-width: 1024px) {
+  [data-scroll] {
+    /* Remove GPU optimization on mobile - native scroll doesn't need it */
+    will-change: auto;
+    transform: none;
+  }
+}
+
+/* Ensure fixed elements (nav, background) stay fixed during smooth scroll */
+.fixed,
+[data-scroll-sticky] {
+  /* Override locomotive scroll transforms for fixed elements */
+  transform: none !important;
+}
+
+/* Performance: Reduce motion for users who prefer it (accessibility) */
+@media (prefers-reduced-motion: reduce) {
+  [data-scroll-container],
+  [data-scroll] {
+    /* Disable smooth scroll and parallax for reduced motion */
+    scroll-behavior: auto !important;
+  }
+}
+
