@@ -35,15 +35,15 @@ const services = [
 
 export function FeatureCards() {
   return (
-    <section id="services" className="py-32 px-6">
+    <section id="services" className="pt-16 pb-32 px-6">
       <div className="max-w-7xl mx-auto">
         {/* Section Header with Locomotive parallax */}
         <motion.div
           className="text-center mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, margin: "-100px", amount: 0.3 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
         >
           {/* Locomotive Scroll parallax:
               - data-scroll-speed: 1.5 = subtle upward float
@@ -55,13 +55,14 @@ export function FeatureCards() {
             data-scroll
             data-scroll-speed="1.5"
           >
-            Our Services
+            WHAT WE OFFER?
           </h2>
           <p 
-            className="text-xl text-muted-foreground max-w-2xl mx-auto"
-            style={{ fontFamily: "'Aeonik', 'Arial', 'Helvetica', sans-serif", fontWeight: 400, lineHeight: 1.6 }}
+            className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+            style={{ fontFamily: "'Aeonik', 'Arial', 'Helvetica', sans-serif", fontWeight: 400, lineHeight: 1.7 }}
           >
-            Comprehensive digital solutions to transform your business and drive growth
+            Turn your vision into reality with cutting-edge solutions that don't just meet expectations—they shatter them. 
+            <span className="text-white font-semibold"> We deliver results that make your competition nervous</span> and your customers loyal.
           </p>
         </motion.div>
 
@@ -73,11 +74,11 @@ export function FeatureCards() {
               className="group relative"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true, margin: "-50px", amount: 0.3 }}
               transition={{
-                duration: 0.5,
-                ease: [0.22, 1, 0.36, 1],
-                delay: index * 0.1,
+                duration: 0.4,
+                ease: "easeOut",
+                delay: index * 0.08,
               }}
             >
               <motion.div
@@ -85,8 +86,8 @@ export function FeatureCards() {
                 whileHover={{
                   y: -8,
                   transition: {
-                    duration: 0.3,
-                    ease: [0.22, 1, 0.36, 1],
+                    duration: 0.2,
+                    ease: "easeOut",
                   },
                 }}
                 style={{
@@ -120,7 +121,7 @@ export function FeatureCards() {
 
                 {/* Content */}
                 <h3 
-                  className="text-2xl mb-4 relative font-bold"
+                  className="text-2xl mb-4 relative font-bold uppercase"
                   style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 600 }}
                 >
                   {service.title}

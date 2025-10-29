@@ -7,12 +7,16 @@ import { FeatureCards } from "./components/FeatureCards";
 import { Portfolio } from "./components/Portfolio";
 import { Footer } from "./components/Footer";
 import { Watermark } from "./components/Watermark";
+import { SplashScreen } from "./components/SplashScreen";
 import { Code2, Palette, Video, Target } from "lucide-react";
 // Import Locomotive Scroll hook for smooth scroll initialization
 import { useLocomotiveScroll } from "./hooks/useLocomotiveScroll";
 
 export default function App() {
   const [isPortfolioOpen, setIsPortfolioOpen] = useState(false);
+  const [effectsEnabled, setEffectsEnabled] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
+  const [showMainContent, setShowMainContent] = useState(false);
   
   // Initialize Locomotive Scroll - returns ref for scroll container
   // This enables smooth scroll on desktop, native scroll on mobile/tablet
@@ -21,7 +25,18 @@ export default function App() {
   useEffect(() => {
     // Force dark mode - always apply dark class
     document.documentElement.classList.add("dark");
+    const params = new URLSearchParams(window.location.search);
+    const effectsParam = params.get('effects');
+    // Default: effects ON, unless ?effects=0/false or reduced-motion
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const disableEffects = effectsParam === '0' || effectsParam === 'false' || prefersReducedMotion;
+    setEffectsEnabled(!disableEffects);
   }, []);
+
+  const handleSplashComplete = () => {
+    setShowSplash(false);
+    setShowMainContent(true);
+  };
 
   const openPortfolio = () => {
     setIsPortfolioOpen(true);
@@ -29,11 +44,17 @@ export default function App() {
 
   return (
     <>
-      {/* Fixed Background - stays in place, not affected by smooth scroll */}
-      <DynamicBackground />
+      {/* Splash Screen - Shows first, then animates upward */}
+      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
 
-      {/* Fixed Navigation - stays at top, not affected by smooth scroll */}
-      <Navigation onPortfolioClick={openPortfolio} />
+      {/* Main Content - Hidden until splash screen completes */}
+      {showMainContent && (
+        <>
+          {/* Fixed Background - stays in place, not affected by smooth scroll */}
+          <DynamicBackground />
+
+          {/* Fixed Navigation - stays at top, not affected by smooth scroll */}
+          <Navigation onPortfolioClick={openPortfolio} />
 
       {/* 
         Locomotive Scroll Container - enables smooth scroll on desktop
@@ -54,8 +75,9 @@ export default function App() {
         */}
         <div data-scroll-section>
           <HeroSection 
-            imageUrl="https://images.unsplash.com/photo-1688387786635-fc9922bc6e38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmdXR1cmlzdGljJTIwY2l0eSUyMG5pZ2h0fGVufDF8fHx8MTc2MTA1MzcwMHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+            imageUrl="https://images.unsplash.com/photo-1688387786635-fc9922bc6e38?crop=entropy&cs=tinysrgb&fit=max&fm=webp&q=85&w=1920"
             onPortfolioClick={openPortfolio}
+            enableEffects={effectsEnabled}
           />
         </div>
 
@@ -77,7 +99,7 @@ export default function App() {
           <ShowcaseSection
             title="Modern Web Development"
             description="Building responsive, fast, and SEO-optimized websites that convert visitors into customers. From simple landing pages to complex web applications, I create digital experiences that drive business growth."
-            imageUrl="/src/assets/images/graphic-design-wpap-3.png"
+            imageUrl="/src/assets/images/graphic-design-wpap-3.png?format=webp"
             tags={["React & Next.js", "Responsive Design", "SEO Optimization", "Performance"]}
             icon={Code2}
           />
@@ -143,6 +165,8 @@ export default function App() {
         isOpen={isPortfolioOpen} 
         onClose={() => setIsPortfolioOpen(false)} 
       />
+        </>
+      )}
     </>
   );
 }

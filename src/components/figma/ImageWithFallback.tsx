@@ -10,7 +10,37 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
     setDidError(true)
   }
 
-  const { src, alt, style, className, ...rest } = props
+  const { src, alt, style, className, loading, fetchPriority, ...rest } = props
+
+  // Generate optimized srcset for responsive images
+  const generateSrcSet = (originalSrc: string | undefined) => {
+    if (!originalSrc || originalSrc.startsWith('data:')) return undefined;
+    
+    // Detect Unsplash URLs and add WebP + responsive sizes
+    if (originalSrc.includes('unsplash.com')) {
+      const baseUrl = originalSrc.split('?')[0];
+      const params = '?crop=entropy&cs=tinysrgb&fit=max&fm=webp&q=85';
+      return `${baseUrl}${params}&w=640 640w, ${baseUrl}${params}&w=1024 1024w, ${baseUrl}${params}&w=1920 1920w`;
+    }
+    return undefined;
+  };
+
+  // Optimize image URL for WebP and quality
+  const optimizeSrc = (originalSrc: string | undefined) => {
+    if (!originalSrc || originalSrc.startsWith('data:')) return originalSrc;
+    
+    if (originalSrc.includes('unsplash.com')) {
+      // Add WebP format and optimize quality if not already specified
+      if (!originalSrc.includes('fm=')) {
+        const separator = originalSrc.includes('?') ? '&' : '?';
+        return `${originalSrc}${separator}fm=webp&q=85`;
+      }
+    }
+    return originalSrc;
+  };
+
+  const optimizedSrc = optimizeSrc(src);
+  const srcSet = generateSrcSet(src);
 
   return didError ? (
     <div
@@ -18,10 +48,22 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
       style={style}
     >
       <div className="flex items-center justify-center w-full h-full">
-        <img src={ERROR_IMG_SRC} alt="Error loading image" {...rest} data-original-url={src} />
+        <img src={ERROR_IMG_SRC} alt="Error loading image" {...rest} data-original-url={src} loading="lazy" decoding="async" />
       </div>
     </div>
   ) : (
-    <img src={src} alt={alt} className={className} style={style} {...rest} onError={handleError} />
+    <img 
+      src={optimizedSrc} 
+      srcSet={srcSet}
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
+      alt={alt} 
+      className={className} 
+      style={style} 
+      {...rest} 
+      onError={handleError} 
+      loading={loading || "lazy"} 
+      decoding="async"
+      fetchPriority={fetchPriority as any}
+    />
   )
 }

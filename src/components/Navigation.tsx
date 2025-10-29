@@ -1,7 +1,9 @@
 import React from "react";
 import { motion } from "motion/react";
-import { Menu, Search, Grid3x3 } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { Button } from "./ui/button";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+import evoxersLogo from "../assets/images/EVOXERS-LOGO.png";
 
 interface NavigationProps {
   onPortfolioClick: () => void;
@@ -10,7 +12,7 @@ interface NavigationProps {
 export function Navigation({ onPortfolioClick }: NavigationProps) {
   return (
     <motion.nav
-      className="fixed top-0 left-0 right-0 z-50 px-6 py-4"
+      className="fixed top-0 left-0 right-0 z-50 px-6 py-2"
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
@@ -24,17 +26,20 @@ export function Navigation({ onPortfolioClick }: NavigationProps) {
         <div className="backdrop-blur-xl bg-background/80 border border-border rounded-2xl px-6 py-3 shadow-lg">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <motion.div
-              className="flex items-center gap-2 cursor-pointer"
+            <motion.a
+              href="#hero"
+              className="flex items-center gap-3 cursor-pointer"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.2 }}
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent-blue)] to-[var(--accent-purple)] flex items-center justify-center">
-                <Grid3x3 className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-semibold">Showcase</span>
-            </motion.div>
+              <ImageWithFallback
+                src={evoxersLogo}
+                alt="EVOXERS Logo"
+                className="h-10 w-auto object-contain"
+                loading="eager"
+              />
+            </motion.a>
 
             {/* Navigation Items */}
             <div className="hidden md:flex items-center gap-8">

@@ -142,9 +142,15 @@ export function Portfolio({ isOpen, onClose }: PortfolioProps) {
                   {/* Project Image */}
                   <div className="relative rounded-xl overflow-hidden">
                     <img
-                      src={selectedProject.image}
+                      src={`${selectedProject.image}&fm=webp&q=85&w=1024`}
+                      srcSet={`${selectedProject.image}&fm=webp&q=85&w=640 640w, ${selectedProject.image}&fm=webp&q=85&w=1024 1024w, ${selectedProject.image}&fm=webp&q=85&w=1920 1920w`}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1024px"
                       alt={selectedProject.title}
                       className="w-full h-64 object-cover"
+                      loading="eager"
+                      decoding="async"
+                      width="1024"
+                      height="512"
                     />
                   </div>
 
@@ -225,9 +231,15 @@ export function Portfolio({ isOpen, onClose }: PortfolioProps) {
                         {/* Project Image */}
                         <div className="relative h-48 overflow-hidden">
                           <img
-                            src={project.image}
+                            src={`${project.image}&fm=webp&q=85&w=640`}
+                            srcSet={`${project.image}&fm=webp&q=85&w=640 640w, ${project.image}&fm=webp&q=85&w=1024 1024w`}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             alt={project.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                            decoding="async"
+                            width="640"
+                            height="360"
                           />
                           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                             <Eye className="w-8 h-8 text-white" />

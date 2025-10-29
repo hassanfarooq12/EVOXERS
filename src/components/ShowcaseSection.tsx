@@ -72,7 +72,7 @@ export function ShowcaseSection({
                   - Bugatti-style elegant float effect
               */}
               <h2 
-                className="text-5xl md:text-6xl mb-4"
+                className="text-5xl md:text-6xl mb-4 uppercase"
                 style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 700 }}
                 data-scroll
                 data-scroll-speed="1.2"

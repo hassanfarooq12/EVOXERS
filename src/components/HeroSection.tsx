@@ -3,140 +3,228 @@ import { motion } from "motion/react";
 import { FloatingDeviceMockup } from "./FloatingDeviceMockup";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "./ui/button";
+import LightRays from "./LightRays";
 
 interface HeroSectionProps {
   imageUrl: string;
   onPortfolioClick: () => void;
+  enableEffects?: boolean;
 }
 
-export function HeroSection({ imageUrl, onPortfolioClick }: HeroSectionProps) {
-  const titleWords = ["Digital", "Solutions", "That", "Convert"];
+export function HeroSection({ imageUrl, onPortfolioClick, enableEffects = false }: HeroSectionProps) {
+  const titleWords = ["Be", "The", "Future", "Be", "An", "EVOXER"];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 py-32">
-      <div className="max-w-7xl mx-auto w-full">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center px-6 py-32 overflow-hidden">
+      {/* Interactive Light Rays Effect */}
+      {enableEffects && (
+        <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 1 }}>
+          <LightRays
+            raysOrigin="top-center"
+            raysColor="#8E1616"
+            secondaryColor="#D84040"
+            tertiaryColor="#EEEEEE"
+            raysSpeed={1.5}
+            lightSpread={0.7}
+            rayLength={1.3}
+            followMouse={true}
+            mouseInfluence={0.12}
+            noiseAmount={0.08}
+            distortion={0.06}
+            className="custom-rays"
+          />
+        </div>
+      )}
+
+      <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col items-center justify-center min-h-screen">
         {/* Text Content */}
-        <div className="text-center mb-16 space-y-6">
+        <div className="text-center space-y-6 max-w-5xl mx-auto px-4">
 
           {/* Main Heading with staggered animation + Locomotive parallax */}
-          <div className="space-y-2">
+          <div className="space-y-4">
             {/* Locomotive Scroll parallax attributes:
                 - data-scroll: Enable scroll tracking
                 - data-scroll-speed: 1.5 = subtle parallax (slower than normal scroll)
                 - GPU-accelerated transform on desktop only
             */}
             <h1 
-              className="text-6xl md:text-8xl tracking-tight"
-              style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 700 }}
+              className="text-6xl md:text-8xl lg:text-9xl font-black text-center leading-none tracking-tight uppercase"
+              style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 900 }}
               data-scroll
               data-scroll-speed="1.5"
             >
-              {titleWords.map((word, index) => (
-                <motion.span
-                  key={index}
-                  className="inline-block mr-4 md:mr-6"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    ease: [0.22, 1, 0.36, 1],
-                    delay: 0.4 + index * 0.08,
-                  }}
-                  style={{ willChange: "transform, opacity" }}
-                >
-                  {word}
-                </motion.span>
-              ))}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+                className="space-y-2"
+              >
+                <div className="text-white">
+                  <span className="bg-gradient-to-r from-[#8E1616] to-[#D84040] bg-clip-text text-transparent">BE</span>{" "}
+                  <span className="text-white">THE FUTURE</span>
+                </div>
+                <div className="text-white">
+                  <span className="bg-gradient-to-r from-[#8E1616] to-[#D84040] bg-clip-text text-transparent">BE</span>{" "}
+                  <span className="bg-gradient-to-r from-[#8E1616] to-[#D84040] bg-clip-text text-transparent font-black">AN EVOXER</span>
+                </div>
+              </motion.div>
             </h1>
           </div>
 
-          {/* Subtitle */}
-          <motion.p
-            className="text-xl text-muted-foreground max-w-2xl mx-auto"
-            style={{ fontFamily: "'Aeonik', 'Arial', 'Helvetica', sans-serif", fontWeight: 400, lineHeight: 1.6 }}
+          {/* Clean Subtitle */}
+          <motion.div
+            className="space-y-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.8, duration: 0.5 }}
           >
-            Transform your business with cutting-edge web development, stunning graphic design, 
-            AI-powered video creation, and high-converting social media campaigns.
-          </motion.p>
+            <p
+              className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto text-center leading-relaxed"
+              style={{ fontFamily: "'Aeonik', 'Arial', 'Helvetica', sans-serif" }}
+            >
+              We don't just build websites – we architect{" "}
+              <span className="text-white font-semibold">digital revolutions</span> that transform businesses into industry leaders.
+            </p>
+            <p
+              className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto text-center leading-relaxed"
+              style={{ fontFamily: "'Aeonik', 'Arial', 'Helvetica', sans-serif" }}
+            >
+              From AI-powered web experiences to viral social campaigns, EVOXERS delivers the{" "}
+              <span className="text-[#D84040] font-semibold">future of digital marketing</span> – today.
+            </p>
+          </motion.div>
 
-          {/* CTA Buttons */}
+          {/* Clean CTA Buttons */}
           <motion.div
-            className="flex flex-wrap items-center justify-center gap-4 pt-4"
+            className="flex flex-row items-center justify-center gap-4 pt-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 1.2, duration: 0.4 }}
           >
             <motion.div
-              whileHover={{ scale: 1.05, y: -2 }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
             >
               <Button
                 size="lg"
-                className="rounded-full bg-gradient-to-r from-[var(--accent-blue)] to-[var(--accent-purple)] hover:shadow-lg hover:shadow-[var(--accent-blue)]/50 transition-shadow"
+                className=""
                 onClick={onPortfolioClick}
               >
-                View My Portfolio
+                Join The Revolution
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </motion.div>
 
             <motion.div
-              whileHover={{ scale: 1.05, y: -2 }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
             >
               <Button
                 size="lg"
                 variant="outline"
-                className="rounded-full border-2"
+                className=""
                 onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                Our Services
+                See The Future
               </Button>
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Device Mockup with reverse parallax for depth effect */}
+        {/* Device Mockup with reverse parallax for depth effect - COMMENTED OUT */}
         {/* Locomotive Scroll parallax attributes:
             - data-scroll: Enable scroll tracking
             - data-scroll-speed: -0.8 = reverse parallax (moves opposite direction)
             - Creates depth perception - floats slower than content
         */}
+        {/* 
         <div
           data-scroll
           data-scroll-speed="-0.8"
         >
           <FloatingDeviceMockup imageUrl={imageUrl} title="showcase.design" />
         </div>
+        */}
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-12 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{
-          delay: 1.5,
-          duration: 0.5,
-        }}
-      >
-        <div className="w-6 h-10 border-2 border-muted-foreground rounded-full flex items-start justify-center p-2">
-          <motion.div
-            className="w-1 h-2 bg-muted-foreground rounded-full"
-            animate={{ y: [0, 12, 0] }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        </div>
-      </motion.div>
+      <style>{`
+/* From Uiverse.io by mrhyddenn */
+#hero button[data-slot="button"] {
+  position: relative;
+  padding: 10px 20px;
+  border-radius: 7px;
+  border: 2px solid;
+  border-image: linear-gradient(90deg, #8E1616 0%, #EEEEEE 100%) 1;
+  background: transparent;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #fff;
+  overflow: hidden;
+  box-shadow: 0 0 0 0 transparent;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+
+#hero button[data-slot="button"]:hover {
+  background: transparent;
+  box-shadow: 0 0 30px 5px rgba(142, 22, 22, 0.6);
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+
+#hero button[data-slot="button"]:hover::before {
+  -webkit-animation: sh02 0.5s 0s linear;
+  -moz-animation: sh02 0.5s 0s linear;
+  animation: sh02 0.5s 0s linear;
+}
+
+#hero button[data-slot="button"]::before {
+  content: '';
+  display: block;
+  width: 0px;
+  height: 86%;
+  position: absolute;
+  top: 7%;
+  left: 0%;
+  opacity: 0;
+  background: #fff;
+  box-shadow: 0 0 50px 30px #fff;
+  -webkit-transform: skewX(-20deg);
+  -moz-transform: skewX(-20deg);
+  -ms-transform: skewX(-20deg);
+  -o-transform: skewX(-20deg);
+  transform: skewX(-20deg);
+}
+
+@keyframes sh02 {
+  from {
+    opacity: 0;
+    left: 0%;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    left: 100%;
+  }
+}
+
+#hero button[data-slot="button"]:active {
+  box-shadow: 0 0 0 0 transparent;
+  -webkit-transition: box-shadow 0.2s ease-in;
+  -moz-transition: box-shadow 0.2s ease-in;
+  transition: box-shadow 0.2s ease-in;
+}
+      `}</style>
     </section>
   );
 }

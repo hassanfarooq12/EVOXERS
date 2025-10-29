@@ -26,29 +26,33 @@ export function useLocomotiveScroll() {
     // Small delay to ensure all DOM elements are fully rendered
     // This prevents issues with sections not being detected by Locomotive
     const initTimeout = setTimeout(() => {
-      // Initialize Locomotive Scroll with performance-optimized settings
+      const params = new URLSearchParams(window.location.search);
+      const smoothParam = params.get('smooth');
+      const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Default: smooth ON, unless ?smooth=0/false or reduced-motion
+      const disallowSmooth = smoothParam === '0' || smoothParam === 'false' || prefersReducedMotion;
+      if (disallowSmooth) return;
+
+      // Initialize Locomotive Scroll with performance-first settings
       locomotiveScrollRef.current = new LocomotiveScroll({
-        el: scrollRef.current!,            // Target element for smooth scroll
-        smooth: true,                       // Enable smooth scrolling on desktop
-        multiplier: 1,                      // Scroll speed multiplier (1 = natural speed)
-        lerp: 0.05,                        // Linear interpolation (0.05 = very smooth, lower = smoother but heavier)
+        el: scrollRef.current!,
+        smooth: true,
+        multiplier: 1,
+        lerp: 0.1, // Higher = less smooth but much better performance (less work per frame)
         smartphone: {
-          smooth: false,                    // CRITICAL: Disable smooth scroll on mobile - use native scroll
-          breakpoint: 768,                  // Mobile breakpoint (<=768px)
+          smooth: false,
+          breakpoint: 768,
         },
         tablet: {
-          smooth: false,                    // CRITICAL: Disable smooth scroll on tablet - use native scroll  
-          breakpoint: 1024,                 // Tablet breakpoint (<=1024px)
+          smooth: false,
+          breakpoint: 1024,
         },
-        // GPU acceleration - force hardware acceleration for smooth 60 FPS
-        class: 'is-inview',                // Class added to elements in viewport
-        getDirection: true,                 // Track scroll direction
-        getSpeed: true,                     // Track scroll speed
-        reloadOnContextChange: true,        // Reload on window resize
+        class: 'is-inview',
+        getDirection: false,
+        getSpeed: false,
+        reloadOnContextChange: true,
       });
 
-      // Force update after initialization to detect all sections
-      // This ensures all data-scroll-section elements are properly registered
       setTimeout(() => {
         locomotiveScrollRef.current?.update();
       }, 100);

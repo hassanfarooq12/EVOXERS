@@ -1,10 +1,28 @@
-import React, { useRef } from "react";
-import { motion } from "motion/react";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Github, Twitter, Linkedin, Mail, ArrowUp } from "lucide-react";
 import { Button } from "./ui/button";
+import evoxersLogo from "../assets/images/EVOXERS-LOGO.png";
 
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercentage = (scrollPosition / documentHeight) * 100;
+      
+      // Show button when user scrolls past 30% of the page
+      setShowScrollToTop(scrollPercentage > 30);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Check initial position
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -40,7 +58,11 @@ export function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-xl">Showcase</h3>
+            <img 
+              src={evoxersLogo} 
+              alt="EVOXERS Logo" 
+              className="h-8 w-auto object-contain mb-2"
+            />
             <p className="text-muted-foreground">
               Crafting exceptional digital experiences with cutting-edge technology.
             </p>
@@ -154,7 +176,7 @@ export function Footer() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            © 2025 Showcase. All rights reserved.
+            © 2025 EVOXERS. All rights reserved.
           </motion.p>
 
           {/* Social Links */}
@@ -184,18 +206,22 @@ export function Footer() {
       </div>
 
       {/* Back to Top Button */}
-      <motion.button
-        onClick={scrollToTop}
-        className="fixed bottom-8 right-8 p-4 rounded-full bg-foreground text-background shadow-lg"
-        initial={{ opacity: 0, scale: 0 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: false }}
-        whileHover={{ scale: 1.1, y: -2 }}
-        whileTap={{ scale: 0.95 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      >
-        <ArrowUp className="w-5 h-5" />
-      </motion.button>
+      <AnimatePresence>
+        {showScrollToTop && (
+          <motion.button
+            onClick={scrollToTop}
+            className="fixed bottom-8 right-8 p-4 rounded-full bg-foreground text-background shadow-lg z-50"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
+            whileHover={{ scale: 1.1, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            <ArrowUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </footer>
   );
 }
