@@ -4,7 +4,11 @@ import { Github, Twitter, Linkedin, Mail, ArrowUp } from "lucide-react";
 import { Button } from "./ui/button";
 import evoxersLogo from "../assets/images/EVOXERS-LOGO.png";
 
-export function Footer() {
+interface FooterProps {
+  onNavigate?: (path: string, hash?: string) => void;
+}
+
+export function Footer({ onNavigate }: FooterProps) {
   const footerRef = useRef<HTMLElement>(null);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
 
@@ -29,10 +33,10 @@ export function Footer() {
   };
 
   const socialLinks = [
-    { icon: Github, href: "#", label: "GitHub" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Mail, href: "#", label: "Email" },
+    { icon: Github, href: "https://github.com/", label: "GitHub" },
+    { icon: Twitter, href: "https://x.com/", label: "Twitter" },
+    { icon: Linkedin, href: "https://linkedin.com/", label: "LinkedIn" },
+    { icon: Mail, href: "mailto:hello@evoxers.com", label: "Email" },
   ];
 
   return (
@@ -68,7 +72,7 @@ export function Footer() {
             </p>
           </motion.div>
 
-          {/* Product Column */}
+          {/* Quick Links */}
           <motion.div
             className="space-y-4 footer-col"
             data-segment="vo"
@@ -81,27 +85,39 @@ export function Footer() {
               className="text-sm uppercase tracking-wider text-muted-foreground"
               style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 600 }}
             >
-              Product
+              Links
             </h4>
             <ul className="space-y-3">
-              {["Features", "Pricing", "Customers", "Support"].map((link) => (
-                <motion.li
-                  key={link}
-                  whileHover={{ x: 4 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  <a
-                    href="#"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+              {[
+                { label: "Portfolio", path: "/portfolio" },
+                { label: "Services", path: "/", hash: "#services" },
+                { label: "Contact", path: "/", hash: "#contact" },
+              ].map((item) => {
+                const href = item.hash ? `${item.path}${item.hash}` : item.path;
+                return (
+                  <motion.li
+                    key={item.label}
+                    whileHover={{ x: 4 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
-                    {link}
-                  </a>
-                </motion.li>
-              ))}
+                    <a
+                      href={href}
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={(event) => {
+                        if (onNavigate) {
+                          event.preventDefault();
+                          onNavigate(item.path, item.hash);
+                        }
+                      }}
+                    >
+                      {item.label}
+                    </a>
+                  </motion.li>
+                );
+              })}
             </ul>
           </motion.div>
-
-          {/* Company Column */}
+          {/* Contact */}
           <motion.div
             className="space-y-4 footer-col"
             data-segment="xer"
@@ -114,56 +130,15 @@ export function Footer() {
               className="text-sm uppercase tracking-wider text-muted-foreground"
               style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 600 }}
             >
-              Company
+              Contact
             </h4>
             <ul className="space-y-3">
-              {["About", "Careers", "Press", "Contact"].map((link) => (
-                <motion.li
-                  key={link}
-                  whileHover={{ x: 4 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  <a
-                    href="#"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Resources Column */}
-          <motion.div
-            className="space-y-4 footer-col"
-            data-segment="s"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-          >
-            <h4
-              className="text-sm uppercase tracking-wider text-muted-foreground"
-              style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 600 }}
-            >
-              Resources
-            </h4>
-            <ul className="space-y-3">
-              {["Documentation", "API", "Community", "Help"].map((link) => (
-                <motion.li
-                  key={link}
-                  whileHover={{ x: 4 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  <a
-                    href="#"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link}
-                  </a>
-                </motion.li>
-              ))}
+              <motion.li whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
+                <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">Get in touch</a>
+              </motion.li>
+              <motion.li whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
+                <a href="mailto:hello@evoxers.com" className="text-muted-foreground hover:text-foreground transition-colors">Email</a>
+              </motion.li>
             </ul>
           </motion.div>
         </div>
