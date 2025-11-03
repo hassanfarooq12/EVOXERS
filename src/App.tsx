@@ -25,9 +25,10 @@ export default function App() {
     return window.location.hash || "";
   });
   
-  // Initialize Locomotive Scroll - returns ref for scroll container
-  // This enables smooth scroll on desktop, native scroll on mobile/tablet
-  const scrollRef = useLocomotiveScroll();
+  // Determine if we're on home and enable Locomotive accordingly
+  const isHome = currentPath === "/" || currentPath === "";
+  // Initialize Locomotive Scroll only when on home route; reacts to route changes
+  const scrollRef = useLocomotiveScroll(isHome);
 
   useEffect(() => {
     // Force dark mode - always apply dark class
@@ -88,7 +89,7 @@ export default function App() {
     }
   }, [currentPath, currentHash, showMainContent]);
 
-  const isHome = currentPath === "/" || currentPath === "";
+  // isHome is computed above
 
   return (
     <>
@@ -113,7 +114,12 @@ export default function App() {
         IMPORTANT: Each component inside must have its own data-scroll-section
         to ensure Locomotive Scroll properly detects and renders all content
       */}
-      <div id="smooth-wrapper" ref={scrollRef} data-scroll-container className="relative min-h-screen">
+      <div
+        id="smooth-wrapper"
+        ref={isHome ? scrollRef : undefined}
+        {...(isHome ? { "data-scroll-container": true } : {})}
+        className="relative min-h-screen"
+      >
         
         {isHome ? (
           <>
@@ -136,6 +142,7 @@ export default function App() {
                 imageUrl="/src/assets/images/graphic-design-wpap-3.png?format=webp"
                 tags={["React & Next.js", "Responsive Design", "SEO Optimization", "Performance"]}
                 icon={Code2}
+                id="showcase-web"
               />
             </div>
 
@@ -147,6 +154,7 @@ export default function App() {
                 tags={["Brand Identity", "Logo Design", "Marketing Materials", "Social Media"]}
                 icon={Palette}
                 reversed
+                id="showcase-design"
               />
             </div>
 
@@ -157,6 +165,7 @@ export default function App() {
                 imageUrl="/src/assets/images/graphic-design-wpap-2.png"
                 tags={["AI Video Generation", "Automatic Subtitles", "Voice Synthesis", "Social Media"]}
                 icon={Video}
+                id="showcase-video"
               />
             </div>
 
@@ -168,6 +177,7 @@ export default function App() {
                 tags={["Facebook Ads", "Instagram Ads", "Campaign Strategy", "ROI Optimization"]}
                 icon={Target}
                 reversed
+                id="showcase-ads"
               />
             </div>
 

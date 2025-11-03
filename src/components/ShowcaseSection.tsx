@@ -10,6 +10,8 @@ interface ShowcaseSectionProps {
   tags: string[];
   icon: LucideIcon;
   reversed?: boolean;
+  metrics?: { value: string; label: string }[]; // optional: meaningful per-component metrics
+  id?: string; // optional unique id to enable sticky targeting
 }
 
 export function ShowcaseSection({
@@ -19,6 +21,8 @@ export function ShowcaseSection({
   tags,
   icon: Icon,
   reversed = false,
+  metrics,
+  id,
 }: ShowcaseSectionProps) {
   // REMOVED: Framer Motion scroll-based parallax (conflicts with Locomotive Scroll)
   // const sectionRef = useRef<HTMLElement>(null);
@@ -31,7 +35,7 @@ export function ShowcaseSection({
   // const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden">
+    <section id={id} className="relative py-32 px-6 overflow-hidden">
       <motion.div
         className="max-w-7xl mx-auto"
         // REMOVED: style={{ opacity }} - was causing sections to be invisible
@@ -82,6 +86,8 @@ export function ShowcaseSection({
               <p 
                 className="text-xl text-muted-foreground leading-relaxed"
                 style={{ fontFamily: "'Aeonik', 'Arial', 'Helvetica', sans-serif", fontWeight: 400, lineHeight: 1.6 }}
+                data-scroll
+                data-scroll-speed="0.6"
               >
                 {description}
               </p>
@@ -94,6 +100,8 @@ export function ShowcaseSection({
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.4, delay: 0.2 }}
+              data-scroll
+              data-scroll-speed="0.5"
             >
               {tags.map((tag, index) => (
                 <motion.span
@@ -118,35 +126,35 @@ export function ShowcaseSection({
               ))}
             </motion.div>
 
-            {/* Stats or additional info */}
-            <motion.div
-              className="grid grid-cols-3 gap-6 pt-6"
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {[
-                { value: "60fps", label: "Performance" },
-                { value: "100%", label: "Responsive" },
-                { value: "A11y", label: "Accessible" },
-              ].map((stat, index) => (
-                <div key={stat.label} className="text-center">
-                  <div 
-                    className="text-2xl mb-1"
-                    style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 600 }}
-                  >
-                    {stat.value}
+            {/* Optional metrics (only render when provided) */}
+            {Array.isArray(metrics) && metrics.length > 0 && (
+              <motion.div
+                className="grid grid-cols-3 gap-6 pt-6"
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                data-scroll
+                data-scroll-speed="0.4"
+              >
+                {metrics.map((stat) => (
+                  <div key={stat.label} className="text-center">
+                    <div 
+                      className="text-2xl mb-1"
+                      style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 600 }}
+                    >
+                      {stat.value}
+                    </div>
+                    <div 
+                      className="text-sm text-muted-foreground"
+                      style={{ fontFamily: "'Aeonik', 'Arial', 'Helvetica', sans-serif", fontWeight: 400 }}
+                    >
+                      {stat.label}
+                    </div>
                   </div>
-                  <div 
-                    className="text-sm text-muted-foreground"
-                    style={{ fontFamily: "'Aeonik', 'Arial', 'Helvetica', sans-serif", fontWeight: 400 }}
-                  >
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
+                ))}
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Mockup Side with counter parallax */}
@@ -158,7 +166,9 @@ export function ShowcaseSection({
           <div 
             className={reversed ? "md:order-1" : ""}
             data-scroll
-            data-scroll-speed="-0.5"
+            data-scroll-sticky
+            data-scroll-target={id ? `#${id}` : undefined}
+            data-scroll-speed="-1.0"
           >
             <FloatingDeviceMockup imageUrl={imageUrl} />
           </div>

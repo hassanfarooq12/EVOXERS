@@ -7,18 +7,42 @@ import LightRays from "./LightRays";
 
 interface HeroSectionProps {
   imageUrl: string;
-  onPortfolioClick: () => void;
+  onPortfolioClick?: () => void; // optional custom action for Join button
+  onSeeFutureClick?: () => void; // optional custom action for See button
   enableEffects?: boolean;
 }
 
-export function HeroSection({ imageUrl, onPortfolioClick, enableEffects = false }: HeroSectionProps) {
+export function HeroSection({ imageUrl, onPortfolioClick, onSeeFutureClick, enableEffects = false }: HeroSectionProps) {
   const titleWords = ["Be", "The", "Future", "Be", "An", "EVOXER"];
+  
+  const handleJoin = () => {
+    if (typeof onPortfolioClick === 'function') {
+      onPortfolioClick();
+      return;
+    }
+    const subject = encodeURIComponent('I want to join the revolution');
+    const body = encodeURIComponent("Hi EVOXERS team,\n\nI'm interested in transforming my digital presence. Let's talk!\n\n—");
+    window.location.href = `mailto:hello@evoxers.com?subject=${subject}&body=${body}`;
+  };
+
+  const handleSeeFuture = () => {
+    if (typeof onSeeFutureClick === 'function') {
+      onSeeFutureClick();
+      return;
+    }
+    const el = document.getElementById('services');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+  };
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center px-6 py-32 overflow-hidden">
       {/* Interactive Light Rays Effect */}
       {enableEffects && (
-        <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 1 }}>
+        <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 1, pointerEvents: 'none' }}>
           <LightRays
             raysOrigin="top-center"
             raysColor="#8E1616"
@@ -51,7 +75,7 @@ export function HeroSection({ imageUrl, onPortfolioClick, enableEffects = false 
               className="text-6xl md:text-8xl lg:text-9xl font-black text-center leading-none tracking-tight uppercase"
               style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 900 }}
               data-scroll
-              data-scroll-speed="1.5"
+              data-scroll-speed="2.0"
             >
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -77,6 +101,8 @@ export function HeroSection({ imageUrl, onPortfolioClick, enableEffects = false 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.5 }}
+            data-scroll
+            data-scroll-speed="0.6"
           >
             <p
               className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto text-center leading-relaxed"
@@ -100,6 +126,8 @@ export function HeroSection({ imageUrl, onPortfolioClick, enableEffects = false 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2, duration: 0.4 }}
+            data-scroll
+            data-scroll-speed="0.9"
           >
             <motion.div
               whileHover={{ scale: 1.02 }}
@@ -109,7 +137,7 @@ export function HeroSection({ imageUrl, onPortfolioClick, enableEffects = false 
               <Button
                 size="lg"
                 className=""
-                onClick={onPortfolioClick}
+                onClick={handleJoin}
               >
                 Join The Revolution
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -125,7 +153,7 @@ export function HeroSection({ imageUrl, onPortfolioClick, enableEffects = false 
                 size="lg"
                 variant="outline"
                 className=""
-                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={handleSeeFuture}
               >
                 See The Future
               </Button>

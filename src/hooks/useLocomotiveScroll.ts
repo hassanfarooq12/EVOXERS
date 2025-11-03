@@ -12,7 +12,7 @@ import LocomotiveScroll from 'locomotive-scroll';
  * 
  * @returns scrollRef - Ref to attach to scroll container element
  */
-export function useLocomotiveScroll() {
+export function useLocomotiveScroll(enabled: boolean = true) {
   // Ref for the scroll container element
   const scrollRef = useRef<HTMLDivElement>(null);
   
@@ -20,6 +20,8 @@ export function useLocomotiveScroll() {
   const locomotiveScrollRef = useRef<LocomotiveScroll | null>(null);
 
   useEffect(() => {
+    // Early return if disabled
+    if (!enabled) return;
     // Early return if container ref not available
     if (!scrollRef.current) return;
 
@@ -33,23 +35,25 @@ export function useLocomotiveScroll() {
       const disallowSmooth = smoothParam === '0' || smoothParam === 'false' || prefersReducedMotion;
       if (disallowSmooth) return;
 
-      // Initialize Locomotive Scroll with performance-first settings
+      // Initialize Locomotive Scroll with luxury-smooth settings
       locomotiveScrollRef.current = new LocomotiveScroll({
         el: scrollRef.current!,
         smooth: true,
-        multiplier: 1,
-        lerp: 0.1, // Higher = less smooth but much better performance (less work per frame)
+        // Slightly higher multiplier for premium inertia feel
+        multiplier: 1.25,
+        // Lower lerp = smoother interpolation
+        lerp: 0.075,
         smartphone: {
-          smooth: false,
+          smooth: true,
           breakpoint: 768,
         },
         tablet: {
-          smooth: false,
+          smooth: true,
           breakpoint: 1024,
         },
         class: 'is-inview',
-        getDirection: false,
-        getSpeed: false,
+        getDirection: true,
+        getSpeed: true,
         reloadOnContextChange: true,
       });
 
@@ -66,7 +70,7 @@ export function useLocomotiveScroll() {
         locomotiveScrollRef.current = null;
       }
     };
-  }, []);
+  }, [enabled]);
 
   // Return the ref to be attached to scroll container
   return scrollRef;

@@ -244,13 +244,7 @@ export function Portfolio() {
                               muted
                               loop
                               playsInline
-                              autoPlay
-                              onLoadedMetadata={() => {
-                                const video = videoRefs.current[project.id];
-                                if (video && !isPlaying) {
-                                  video.play().catch(() => {});
-                                }
-                              }}
+                              preload="metadata"
                             />
                           ) : (
                             <img
@@ -316,6 +310,8 @@ export function Portfolio() {
                       <img
                         src={selectedProject.image}
                         alt={selectedProject.title}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-auto object-contain"
                       />
                     </div>
