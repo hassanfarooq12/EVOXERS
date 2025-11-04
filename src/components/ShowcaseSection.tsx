@@ -12,6 +12,7 @@ interface ShowcaseSectionProps {
   reversed?: boolean;
   metrics?: { value: string; label: string }[]; // optional: meaningful per-component metrics
   id?: string; // optional unique id to enable sticky targeting
+  lazyLoad?: boolean; // optional: enable lazy loading for below-the-fold images
 }
 
 export function ShowcaseSection({
@@ -23,6 +24,7 @@ export function ShowcaseSection({
   reversed = false,
   metrics,
   id,
+  lazyLoad = true,
 }: ShowcaseSectionProps) {
   // REMOVED: Framer Motion scroll-based parallax (conflicts with Locomotive Scroll)
   // const sectionRef = useRef<HTMLElement>(null);
@@ -170,7 +172,7 @@ export function ShowcaseSection({
             data-scroll-target={id ? `#${id}` : undefined}
             data-scroll-speed="-1.0"
           >
-            <FloatingDeviceMockup imageUrl={imageUrl} />
+            <FloatingDeviceMockup imageUrl={imageUrl} lazyLoad={lazyLoad} />
           </div>
         </div>
       </motion.div>

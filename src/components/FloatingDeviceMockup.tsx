@@ -6,9 +6,10 @@ interface FloatingDeviceMockupProps {
   children?: React.ReactNode;
   imageUrl?: string;
   title?: string;
+  lazyLoad?: boolean;
 }
 
-export function FloatingDeviceMockup({ children, imageUrl, title }: FloatingDeviceMockupProps) {
+export function FloatingDeviceMockup({ children, imageUrl, title, lazyLoad = true }: FloatingDeviceMockupProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rafId = useRef<number>();
 
@@ -112,6 +113,9 @@ export function FloatingDeviceMockup({ children, imageUrl, title }: FloatingDevi
                 src={imageUrl}
                 alt="Showcase content"
                 className="w-full h-full object-cover"
+                loading={lazyLoad ? "lazy" : "eager"}
+                decoding="async"
+                fetchPriority={lazyLoad ? "low" : "high"}
               />
             ) : (
               children
