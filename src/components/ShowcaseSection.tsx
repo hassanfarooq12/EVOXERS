@@ -167,10 +167,6 @@ export function ShowcaseSection({
           */}
           <div 
             className={reversed ? "md:order-1" : ""}
-            data-scroll
-            data-scroll-sticky
-            data-scroll-target={id ? `#${id}` : undefined}
-            data-scroll-speed="-1.0"
           >
             <FloatingDeviceMockup imageUrl={imageUrl} lazyLoad={lazyLoad} />
           </div>
