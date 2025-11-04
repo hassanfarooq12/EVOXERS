@@ -362,8 +362,6 @@ export function Portfolio() {
                                 <img
                                   src={project.image}
                                   alt={project.title}
-                                  loading="lazy"
-                                  decoding="async"
                                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"                                    
                                 />
                               )}
@@ -424,8 +422,6 @@ export function Portfolio() {
                       <img
                         src={selectedProject.image}
                         alt={selectedProject.title}
-                        loading="lazy"
-                        decoding="async"
                         className="w-full h-auto object-contain"
                       />
                     </div>
