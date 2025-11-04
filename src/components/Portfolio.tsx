@@ -6,13 +6,13 @@ import { portfolioProjects, type PortfolioCategory, type Project } from "./portf
 
 const categories: Array<{ value: PortfolioCategory | "all"; label: string; icon?: string }> = [
   { value: "all", label: "All" },
-  { value: "Videos", label: "Videos" },
-  { value: "Meta-Ads", label: "Meta-Ads" },
-  { value: "MockUps", label: "MockUps" },
   { value: "Logos", label: "Logos" },
-  { value: "Banners", label: "Banners" },
   { value: "Social Media Posts", label: "Social Media Posts" },
   { value: "Websites", label: "Websites" },
+  { value: "Meta-Ads", label: "Meta-Ads" },
+  { value: "Videos", label: "Videos" },
+  { value: "MockUps", label: "MockUps" },
+  { value: "Banners", label: "Banners" },
 ];
 
 export function Portfolio() {
