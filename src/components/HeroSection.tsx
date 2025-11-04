@@ -72,7 +72,7 @@ export function HeroSection({ imageUrl, onPortfolioClick, onSeeFutureClick, enab
                 - GPU-accelerated transform on desktop only
             */}
             <h1 
-              className="text-6xl md:text-8xl lg:text-9xl font-black text-center leading-none tracking-tight uppercase"
+              className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black text-center leading-none tracking-tight uppercase"
               style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 900 }}
               data-scroll
               data-scroll-speed="2.0"
@@ -122,7 +122,7 @@ export function HeroSection({ imageUrl, onPortfolioClick, onSeeFutureClick, enab
 
           {/* Clean CTA Buttons */}
           <motion.div
-            className="flex flex-row items-center justify-center gap-4 pt-6"
+            className="flex flex-row flex-wrap items-center justify-center gap-4 pt-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2, duration: 0.4 }}
