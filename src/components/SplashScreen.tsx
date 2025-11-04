@@ -10,21 +10,18 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // Show splash screen for minimum time (1.5 seconds) to ensure it's visible
-    // This ensures splash screen shows on every fresh page load and refresh
+    // INSTANT RELOAD - Minimal delay for smooth transition
     const handleComplete = () => {
       setIsVisible(false);
       setTimeout(() => {
         onComplete();
-      }, 300); // Animation delay
+      }, 150); // Reduced animation delay
     };
     
-    // Minimum time to show splash screen (1.5 seconds)
-    // This ensures it's visible even if page loads quickly
-    const minDisplayTime = 1500;
+    // Ultra fast minimum time (200ms) - just enough to show logo
+    const minDisplayTime = 200;
     const startTime = Date.now();
     
-    // Wait for page load AND minimum display time
     const handleLoad = () => {
       const elapsed = Date.now() - startTime;
       const remaining = Math.max(0, minDisplayTime - elapsed);
@@ -34,19 +31,19 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
       }, remaining);
     };
     
-    // If page is already loaded, still wait for minimum time
+    // If page is already loaded (from cache), show splash very briefly
     if (document.readyState === 'complete') {
       setTimeout(() => {
         handleComplete();
       }, minDisplayTime);
     } else {
-      // Wait for page load, but ensure minimum display time
+      // Wait for page load, but minimal delay
       window.addEventListener('load', handleLoad);
       
-      // Fallback: if page takes too long, show for minimum time anyway
+      // Fallback: if page takes too long, show for minimal time anyway
       setTimeout(() => {
         handleComplete();
-      }, minDisplayTime + 500);
+      }, minDisplayTime + 100);
     }
     
     return () => {
@@ -61,7 +58,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           className="fixed inset-0 z-[9999] bg-background flex items-center justify-center"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.15 }}
         >
           {/* Logo Image Container */}
           <motion.div
@@ -72,8 +69,8 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               y: "-100vh",
               opacity: 0,
               transition: {
-                duration: 0.8, // Reduced from 1.5s to 0.8s for faster animation
-                ease: [0.22, 1, 0.36, 1], // Smooth easing like curtains opening
+                duration: 0.3, // Ultra fast animation for instant reload
+                ease: [0.22, 1, 0.36, 1],
               },
             }}
           >
@@ -84,9 +81,9 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               exit={{
                 y: "-100%",
                 transition: {
-                  duration: 0.8, // Reduced from 1.5s to 0.8s
+                  duration: 0.3, // Ultra fast
                   ease: [0.22, 1, 0.36, 1],
-                  delay: 0.05, // Reduced delay
+                  delay: 0,
                 },
               }}
             />
@@ -98,7 +95,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               className="relative z-20 max-w-[200px] md:max-w-[280px] lg:max-w-[320px] w-auto h-auto object-contain"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+              transition={{ duration: 0.2, ease: "easeOut", delay: 0.1 }}
               loading="eager"
               fetchPriority="high"
               decoding="sync"
@@ -111,9 +108,9 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               exit={{
                 y: "100%",
                 transition: {
-                  duration: 0.8, // Reduced from 1.5s to 0.8s
+                  duration: 0.3, // Ultra fast
                   ease: [0.22, 1, 0.36, 1],
-                  delay: 0.05, // Reduced delay
+                  delay: 0,
                 },
               }}
             />
