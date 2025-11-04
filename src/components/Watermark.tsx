@@ -67,7 +67,7 @@ export function Watermark() {
   }, []);
 
   return (
-    <section aria-hidden="true" style={{ marginTop: 0 }}>
+    <section aria-hidden="true" style={{ marginTop: 0, overflow: 'visible' }}>
       <div ref={containerRef} className="watermark-container">
         <div ref={textRef} className="watermark-text">
           <span className="wm-letter">E</span><span className="wm-letter">V</span><span className="wm-letter">O</span><span className="wm-letter">X</span><span className="wm-letter">E</span><span className="wm-letter">R</span><span className="wm-letter">S</span>

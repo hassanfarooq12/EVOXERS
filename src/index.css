@@ -2021,21 +2021,24 @@ body {
   align-items: flex-end !important;
   justify-content: center !important;
   margin: 0 !important;
-  padding: 0 !important;
+  padding: 10vh 0 5vh 0 !important; /* Add padding to prevent text clipping */
   background: transparent !important;
+  overflow: visible !important; /* Ensure text is not clipped */
 }
 
 /* Ensure watermark spans never wrap to a second line */
 .watermark-text {
   display: block !important;
   white-space: nowrap !important;
-  overflow: hidden !important;
+  overflow: visible !important; /* Changed from hidden to visible to prevent text clipping */
   text-overflow: clip !important;
   pointer-events: auto !important;
   transform-origin: center bottom !important;
   will-change: transform, filter, opacity, text-shadow !important;
   transition: transform 0.55s cubic-bezier(.22,.61,.36,1),
               filter 0.55s cubic-bezier(.22,.61,.36,1) !important;
+  padding-top: 10vh !important; /* Add padding to prevent top clipping */
+  padding-bottom: 5vh !important; /* Add padding to prevent bottom clipping */
 }
 
 .wm-letter {

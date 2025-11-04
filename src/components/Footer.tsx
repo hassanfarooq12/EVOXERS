@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Github, Twitter, Linkedin, Mail, ArrowUp } from "lucide-react";
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import evoxersLogo from "../assets/images/EVOXERS-LOGO.jpg";
+import evoxersLogo from "../assets/images/EVOXERS-LOGO.png";
 
 interface FooterProps {
   onNavigate?: (path: string, hash?: string) => void;

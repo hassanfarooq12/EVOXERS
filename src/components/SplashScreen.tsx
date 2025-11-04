@@ -10,37 +10,46 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // Show splash screen for minimum time (reduced from 2s to 0.8s for faster load)
-    // Also check if page is already loaded
+    // Show splash screen for minimum time (1.5 seconds) to ensure it's visible
+    // This ensures splash screen shows on every fresh page load and refresh
     const handleComplete = () => {
       setIsVisible(false);
       setTimeout(() => {
         onComplete();
-      }, 300); // Reduced animation delay
+      }, 300); // Animation delay
     };
     
-    // If already loaded, skip delay
+    // Minimum time to show splash screen (1.5 seconds)
+    // This ensures it's visible even if page loads quickly
+    const minDisplayTime = 1500;
+    const startTime = Date.now();
+    
+    // Wait for page load AND minimum display time
+    const handleLoad = () => {
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, minDisplayTime - elapsed);
+      
+      setTimeout(() => {
+        handleComplete();
+      }, remaining);
+    };
+    
+    // If page is already loaded, still wait for minimum time
     if (document.readyState === 'complete') {
-      handleComplete();
-      return;
+      setTimeout(() => {
+        handleComplete();
+      }, minDisplayTime);
+    } else {
+      // Wait for page load, but ensure minimum display time
+      window.addEventListener('load', handleLoad);
+      
+      // Fallback: if page takes too long, show for minimum time anyway
+      setTimeout(() => {
+        handleComplete();
+      }, minDisplayTime + 500);
     }
     
-    // Wait for minimum time (reduced from 2000ms to 800ms) or page load
-    const timer = setTimeout(() => {
-      handleComplete();
-    }, 800);
-    
-    const handleLoad = () => {
-      if (document.readyState === 'complete') {
-        clearTimeout(timer);
-        handleComplete();
-      }
-    };
-    
-    window.addEventListener('load', handleLoad);
-    
     return () => {
-      clearTimeout(timer);
       window.removeEventListener('load', handleLoad);
     };
   }, [onComplete]);
