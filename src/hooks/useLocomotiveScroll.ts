@@ -38,17 +38,17 @@ export function useLocomotiveScroll(enabled: boolean = true) {
       // Initialize Locomotive Scroll with luxury-smooth settings
       locomotiveScrollRef.current = new LocomotiveScroll({
         el: scrollRef.current!,
-        smooth: true,
-        // Slightly higher multiplier for premium inertia feel
-        multiplier: 1.25,
-        // Lower lerp = smoother interpolation
-        lerp: 0.075,
+        smooth: true, // desktop only
+        // Balanced multiplier to avoid jank
+        multiplier: 1.0,
+        // Smoothing factor
+        lerp: 0.1,
         smartphone: {
-          smooth: true,
+          smooth: false, // use native scroll on phones
           breakpoint: 768,
         },
         tablet: {
-          smooth: true,
+          smooth: false, // use native scroll on tablets
           breakpoint: 1024,
         },
         class: 'is-inview',
