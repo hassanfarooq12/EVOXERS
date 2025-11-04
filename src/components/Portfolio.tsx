@@ -12,6 +12,7 @@ const categories: Array<{ value: PortfolioCategory | "all"; label: string; icon?
   { value: "Logos", label: "Logos" },
   { value: "Banners", label: "Banners" },
   { value: "Social Media Posts", label: "Social Media Posts" },
+  { value: "Websites", label: "Websites" },
 ];
 
 export function Portfolio() {
@@ -223,78 +224,191 @@ export function Portfolio() {
                     }
                   };
 
+                                    // Check if this is a website project (no image)
+                  const isWebsite = project.category === "Websites" && !project.image;
+
                   return (
                     <motion.div
                       key={project.id}
                       className="group text-left"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.03 }}
+                      transition={{ duration: 0.3, delay: index * 0.03 }}       
                     >
-                      <div className="relative overflow-hidden rounded-2xl border border-border bg-card transition-shadow duration-300 group-hover:shadow-lg">
-                        <div 
-                          className="relative h-48 overflow-hidden cursor-pointer"
-                          onClick={isVideo ? handleVideoClick : handleCardClick}
-                        >
-                          {isVideo ? (
-                            <video
-                              ref={(el) => (videoRefs.current[project.id] = el)}
-                              src={project.videoUrl}
-                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                              muted
-                              loop
-                              playsInline
-                              preload="metadata"
+                      <div className="relative overflow-hidden rounded-2xl border border-border bg-card transition-shadow duration-300 group-hover:shadow-lg">  
+                        {isWebsite ? (
+                          <>
+                            {/* Unique Website Card Design */}
+                            <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block relative h-48 overflow-hidden cursor-pointer group/website"
+                          >
+                            {/* Animated gradient background */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#8E1616]/20 via-[#D84040]/10 to-[#8E1616]/20 group-hover/website:from-[#8E1616]/40 group-hover/website:via-[#D84040]/30 group-hover/website:to-[#8E1616]/40 transition-all duration-500" />
+                            
+                            {/* Animated grid pattern overlay */}
+                            <div className="absolute inset-0 opacity-[0.03] group-hover/website:opacity-[0.08] transition-opacity duration-500"
+                              style={{
+                                backgroundImage: `
+                                  linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                                  linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+                                `,
+                                backgroundSize: '20px 20px'
+                              }}
                             />
-                          ) : (
-                            <img
-                              src={project.image}
-                              alt={project.title}
-                              loading="lazy"
-                              decoding="async"
-                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            
+                            {/* Shimmer effect */}
+                            <motion.div
+                              className="absolute inset-0 opacity-0 group-hover/website:opacity-100"
+                              style={{
+                                background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
+                              }}
+                              animate={{
+                                x: ["-100%", "100%"],
+                              }}
+                              transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                ease: "linear",
+                              }}
                             />
-                          )}
-                          {isVideo && !isPlaying && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-100 transition-opacity duration-300 hover:bg-black/60">
-                              <Play className="w-12 h-12 text-white fill-white drop-shadow-lg" />
+                            
+                            {/* Content */}
+                            <div className="relative h-full flex flex-col items-center justify-center p-6 space-y-4 z-10">
+                              {/* Website Icon/Browser Window */}
+                              <motion.div
+                                className="relative"
+                                whileHover={{ scale: 1.1, rotate: 5 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#8E1616] to-[#D84040] flex items-center justify-center shadow-2xl group-hover/website:shadow-[#D84040]/50">
+                                  <ExternalLink className="w-8 h-8 text-white" />
+                                </div>
+                              </motion.div>
+                              
+                                                             {/* Domain Name */}
+                               <div className="text-center space-y-1">
+                                 <h3
+                                   className="text-lg font-bold uppercase tracking-tight text-foreground group-hover/website:text-[#D84040] transition-colors duration-300"
+                                   style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 700 }}
+                                 >
+                                   {project.title}
+                                 </h3>
+                                 {project.liveUrl && (
+                                   <p className="text-xs text-muted-foreground group-hover/website:text-foreground/70 transition-colors duration-300 font-mono">
+                                     {(() => {
+                                       try {
+                                         return new URL(project.liveUrl).hostname.replace('www.', '');
+                                       } catch {
+                                         return project.liveUrl.replace(/^https?:\/\//, '').replace('www.', '').split('/')[0];
+                                       }
+                                     })()}
+                                   </p>
+                                 )}
+                               </div>
+                              
+                              {/* Visit Label */}
+                              <motion.div
+                                className="flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground group-hover/website:text-[#D84040] transition-colors duration-300"
+                                initial={{ opacity: 0.7 }}
+                                whileHover={{ opacity: 1 }}
+                              >
+                                <span>Visit Website</span>
+                                <ExternalLink className="w-3 h-3" />
+                              </motion.div>
                             </div>
-                          )}
-                          {!isVideo && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                              <Eye className="w-8 h-8 text-white" />
+                            
+                                                         {/* Glow effect on hover */}
+                             <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-[#8E1616] via-[#D84040] to-[#8E1616] opacity-0 group-hover/website:opacity-20 blur-xl transition-opacity duration-500 -z-10" />
+                           </a>
+                           {/* Website Card Footer */}
+                           <div className="p-5 space-y-3 border-t border-border/50">
+                             <span className="inline-block rounded-full bg-gradient-to-r from-[#8E1616]/20 to-[#D84040]/20 border border-[#D84040]/30 px-3 py-1 text-xs uppercase tracking-wide text-[#D84040]">
+                               {project.category}
+                             </span>
+                             <div className="flex flex-wrap gap-2 pt-2">
+                               {project.technologies.slice(0, 3).map((tech) => (
+                                 <span key={tech} className="rounded bg-muted/50 border border-border/50 px-2 py-1 text-[11px] uppercase tracking-wide text-muted-foreground">
+                                   {tech}
+                                 </span>
+                               ))}
+                               {project.technologies.length > 3 && (
+                                 <span className="rounded bg-muted px-2 py-1 text-[11px] uppercase tracking-wide text-muted-foreground">
+                                   +{project.technologies.length - 3}
+                                 </span>
+                               )}
+                             </div>
+                           </div>
+                          </>
+                        ) : (
+                          <>
+                            <div
+                              className="relative h-48 overflow-hidden cursor-pointer"                                                                              
+                              onClick={isVideo ? handleVideoClick : handleCardClick}
+                            >
+                              {isVideo ? (
+                                <video
+                                  ref={(el) => (videoRefs.current[project.id] = el)}
+                                  src={project.videoUrl}
+                                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"                                    
+                                  muted
+                                  loop
+                                  playsInline
+                                  preload="metadata"
+                                />
+                              ) : (
+                                <img
+                                  src={project.image}
+                                  alt={project.title}
+                                  loading="lazy"
+                                  decoding="async"
+                                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"                                    
+                                />
+                              )}
+                              {isVideo && !isPlaying && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-100 transition-opacity duration-300 hover:bg-black/60">                                                                       
+                                  <Play className="w-12 h-12 text-white fill-white drop-shadow-lg" />                                                               
+                                </div>
+                              )}
+                              {!isVideo && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">                                                                   
+                                  <Eye className="w-8 h-8 text-white" />
+                                </div>
+                              )}
                             </div>
-                          )}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={handleCardClick}
-                          className="w-full text-left"
-                        >
-                      <div className="p-5 space-y-3">
-                        <span className="inline-block rounded-full bg-muted px-3 py-1 text-xs uppercase tracking-wide">
-                          {project.category}
-                        </span>
-                        <h3 
-                          className="text-xl font-bold uppercase transition-colors duration-300 group-hover:text-accent-blue"
-                          style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 600 }}
-                        >
-                          {project.title}
-                        </h3>
-                        <div className="flex flex-wrap gap-2 pt-2">
-                          {project.technologies.slice(0, 3).map((tech) => (
-                            <span key={tech} className="rounded bg-accent px-2 py-1 text-[11px] uppercase tracking-wide text-accent-foreground">
-                              {tech}
-                            </span>
-                          ))}
-                          {project.technologies.length > 3 && (
-                            <span className="rounded bg-muted px-2 py-1 text-[11px] uppercase tracking-wide text-muted-foreground">
-                              +{project.technologies.length - 3}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </button>
+                            <button
+                              type="button"
+                              onClick={handleCardClick}
+                              className="w-full text-left"
+                            >
+                              <div className="p-5 space-y-3">
+                                <span className="inline-block rounded-full bg-muted px-3 py-1 text-xs uppercase tracking-wide">                                         
+                                  {project.category}
+                                </span>
+                                <h3
+                                  className="text-xl font-bold uppercase transition-colors duration-300 group-hover:text-accent-blue"                                   
+                                  style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 600 }}                                           
+                                >
+                                  {project.title}
+                                </h3>
+                                <div className="flex flex-wrap gap-2 pt-2">
+                                  {project.technologies.slice(0, 3).map((tech) => (     
+                                    <span key={tech} className="rounded bg-accent px-2 py-1 text-[11px] uppercase tracking-wide text-accent-foreground">                
+                                      {tech}
+                                    </span>
+                                  ))}
+                                  {project.technologies.length > 3 && (
+                                    <span className="rounded bg-muted px-2 py-1 text-[11px] uppercase tracking-wide text-muted-foreground">                             
+                                      +{project.technologies.length - 3}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </button>
+                                                     </>
+                         )}
                       </div>
                     </motion.div>
                   );

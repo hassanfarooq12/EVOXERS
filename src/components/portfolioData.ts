@@ -1,4 +1,4 @@
-export type PortfolioCategory = "Logos" | "Banners" | "MockUps" | "Videos" | "Social Media Posts" | "Meta-Ads";
+export type PortfolioCategory = "Logos" | "Banners" | "MockUps" | "Videos" | "Social Media Posts" | "Meta-Ads" | "Websites";
 
 export interface Project {
   id: number;
@@ -558,5 +558,51 @@ export const portfolioProjects: Project[] = [
     image: "/src/assets/images/POSTS/POST-12.png",
     technologies: ["Seasonal Design", "Event Marketing", "Campaign Timing"],
     features: ["Seasonal Alignment", "Event Specific", "Timely Content"],
+  },
+
+  // ===== WEBSITES - Website Development Projects =====
+  {
+    id: 7001,
+    title: "VFiler",
+    category: "Websites",
+    description: "Professional file management and sharing platform with modern UI/UX design.",
+    image: "", // No image available
+    mediaType: "image",
+    technologies: ["Web Development", "UI/UX Design", "React", "Modern Stack"],
+    liveUrl: "https://vfiler.com/",
+    features: ["Modern Interface", "User-Friendly", "Responsive Design", "Performance Optimized"],
+  },
+  {
+    id: 7002,
+    title: "Archie Estimates",
+    category: "Websites",
+    description: "Construction and estimation services platform with professional business presentation.",
+    image: "", // No image available
+    mediaType: "image",
+    technologies: ["Web Development", "Business Solutions", "Modern Design", "SEO Optimized"],
+    liveUrl: "https://archiestimates.com/",
+    features: ["Professional Design", "Business Focused", "SEO Optimized", "Modern Stack"],
+  },
+  {
+    id: 7003,
+    title: "Arco Experts",
+    category: "Websites",
+    description: "Expert consulting and services platform showcasing professional expertise.",
+    image: "", // No image available
+    mediaType: "image",
+    technologies: ["Web Development", "Consulting Platform", "Professional Design", "User Experience"],
+    liveUrl: "https://arcoexperts.com/",
+    features: ["Expert Platform", "Professional Design", "User-Centric", "Modern Architecture"],
+  },
+  {
+    id: 7004,
+    title: "Radiant CS",
+    category: "Websites",
+    description: "Customer service and support platform with efficient communication tools.",
+    image: "", // No image available
+    mediaType: "image",
+    technologies: ["Web Development", "Customer Service", "Modern UI", "Performance"],
+    liveUrl: "https://radiantcs.com.pk/",
+    features: ["Service Platform", "Efficient Design", "Customer-Focused", "High Performance"],
   },
 ];
