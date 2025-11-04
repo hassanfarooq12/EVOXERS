@@ -356,15 +356,16 @@ export function Portfolio() {
                                   muted
                                   loop
                                   playsInline
-                                  preload="metadata"
+                                  preload="auto"
                                 />
                               ) : (
                                 <img
                                   src={project.image}
                                   alt={project.title}
                                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                  loading="lazy"
+                                  loading="eager"
                                   decoding="async"
+                                  fetchPriority="high"
                                 />
                               )}
                               {isVideo && !isPlaying && (
@@ -427,6 +428,7 @@ export function Portfolio() {
                         className="w-full h-auto object-contain"
                         loading="eager"
                         decoding="async"
+                        fetchPriority="high"
                       />
                     </div>
                     <div className="space-y-2">

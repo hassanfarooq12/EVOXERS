@@ -68,6 +68,7 @@ export function Footer({ onNavigate }: FooterProps) {
               alt="EVOXERS Logo"
               className="h-8 w-auto object-contain mb-2"
               loading="eager"
+              fetchPriority="high"
               style={{ maxWidth: '100%', height: 'auto' }}
             />
             <p className="text-muted-foreground">

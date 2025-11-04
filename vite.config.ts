@@ -52,7 +52,16 @@
     build: {
       target: 'esnext',
       outDir: 'dist',
+      assetsInlineLimit: 4096, // Inline small assets (< 4kb)
+      chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        output: {
+          manualChunks: undefined, // Don't split chunks for faster loading
+          assetFileNames: 'assets/[name]-[hash][extname]',
+        },
+      },
     },
+    assetsInclude: ['**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.mp4'],
     server: {
       port: 3000,
       open: true,

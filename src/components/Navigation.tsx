@@ -46,6 +46,7 @@ export function Navigation({ onNavigate }: NavigationProps) {
                 alt="EVOXERS Logo"
                 className="h-10 w-auto object-contain"
                 loading="eager"
+                fetchPriority="high"
               />
             </motion.a>
 

@@ -101,6 +101,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
               loading="eager"
               fetchPriority="high"
+              decoding="sync"
             />
 
             {/* Curtain Effect - Bottom Curtain */}
