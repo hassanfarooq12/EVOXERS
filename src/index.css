@@ -1649,23 +1649,31 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
+/* Hide scrollbar but keep scrolling functionality */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 0px;
+  display: none;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  display: none;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--muted-foreground);
-  border-radius: 5px;
+  display: none;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--foreground);
+  display: none;
+}
+
+/* Firefox - hide scrollbar */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 :root {
