@@ -52,14 +52,19 @@
     build: {
       target: 'esnext',
       outDir: 'dist',
-      assetsInlineLimit: 4096, // Inline small assets (< 4kb)
+      assetsInlineLimit: 2048, // Reduce inline limit - force separate files for better caching
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
           manualChunks: undefined, // Don't split chunks for faster loading
-          assetFileNames: 'assets/[name]-[hash][extname]',
+          assetFileNames: 'assets/[name]-[hash:8][extname]', // Shorter hash for faster loading
+          chunkFileNames: 'assets/[name]-[hash:8].js',
+          entryFileNames: 'assets/[name]-[hash:8].js',
         },
       },
+      // Optimize assets
+      assetsDir: 'assets',
+      cssCodeSplit: false, // Single CSS file for faster loading
     },
     assetsInclude: ['**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.mp4'],
     server: {

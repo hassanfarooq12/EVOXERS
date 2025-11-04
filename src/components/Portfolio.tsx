@@ -357,6 +357,7 @@ export function Portfolio() {
                                   loop
                                   playsInline
                                   preload="auto"
+                                  poster={project.image}
                                 />
                               ) : (
                                 <img
