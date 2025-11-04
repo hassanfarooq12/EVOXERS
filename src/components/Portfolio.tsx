@@ -362,7 +362,9 @@ export function Portfolio() {
                                 <img
                                   src={project.image}
                                   alt={project.title}
-                                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"                                    
+                                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                  loading="lazy"
+                                  decoding="async"
                                 />
                               )}
                               {isVideo && !isPlaying && (
@@ -423,6 +425,8 @@ export function Portfolio() {
                         src={selectedProject.image}
                         alt={selectedProject.title}
                         className="w-full h-auto object-contain"
+                        loading="eager"
+                        decoding="async"
                       />
                     </div>
                     <div className="space-y-2">

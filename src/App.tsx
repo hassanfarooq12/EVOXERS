@@ -20,6 +20,7 @@ import graphicDesignWpap4 from "./assets/images/graphic-design-wpap-4.jpeg";
 export default function App() {
   const [effectsEnabled, setEffectsEnabled] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
+  // Start with content hidden so splash screen shows properly
   const [showMainContent, setShowMainContent] = useState(false);
   const [currentPath, setCurrentPath] = useState(() => {
     if (typeof window === "undefined") return "/";
@@ -148,6 +149,7 @@ export default function App() {
                 tags={["React & Next.js", "Responsive Design", "SEO Optimization", "Performance"]}
                 icon={Code2}
                 id="showcase-web"
+                lazyLoad={false}
               />
             </div>
 
@@ -160,6 +162,7 @@ export default function App() {
                 icon={Palette}
                 reversed
                 id="showcase-design"
+                lazyLoad={true}
               />
             </div>
 
@@ -171,6 +174,7 @@ export default function App() {
                 tags={["AI Video Generation", "Automatic Subtitles", "Voice Synthesis", "Social Media"]}
                 icon={Video}
                 id="showcase-video"
+                lazyLoad={true}
               />
             </div>
 
@@ -183,6 +187,7 @@ export default function App() {
                 icon={Target}
                 reversed
                 id="showcase-ads"
+                lazyLoad={true}
               />
             </div>
 

@@ -10,16 +10,39 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // Show splash screen for 2 seconds, then animate upward
-    const timer = setTimeout(() => {
+    // Show splash screen for minimum time (reduced from 2s to 0.8s for faster load)
+    // Also check if page is already loaded
+    const handleComplete = () => {
       setIsVisible(false);
-      // Call onComplete after animation finishes (1.5s duration + 0.2s delay)
       setTimeout(() => {
         onComplete();
-      }, 1700);
-    }, 2000);
-
-    return () => clearTimeout(timer);
+      }, 300); // Reduced animation delay
+    };
+    
+    // If already loaded, skip delay
+    if (document.readyState === 'complete') {
+      handleComplete();
+      return;
+    }
+    
+    // Wait for minimum time (reduced from 2000ms to 800ms) or page load
+    const timer = setTimeout(() => {
+      handleComplete();
+    }, 800);
+    
+    const handleLoad = () => {
+      if (document.readyState === 'complete') {
+        clearTimeout(timer);
+        handleComplete();
+      }
+    };
+    
+    window.addEventListener('load', handleLoad);
+    
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('load', handleLoad);
+    };
   }, [onComplete]);
 
   return (
@@ -40,7 +63,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               y: "-100vh",
               opacity: 0,
               transition: {
-                duration: 1.5,
+                duration: 0.8, // Reduced from 1.5s to 0.8s for faster animation
                 ease: [0.22, 1, 0.36, 1], // Smooth easing like curtains opening
               },
             }}
@@ -52,9 +75,9 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               exit={{
                 y: "-100%",
                 transition: {
-                  duration: 1.5,
+                  duration: 0.8, // Reduced from 1.5s to 0.8s
                   ease: [0.22, 1, 0.36, 1],
-                  delay: 0.1,
+                  delay: 0.05, // Reduced delay
                 },
               }}
             />
@@ -67,6 +90,8 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+              loading="eager"
+              fetchPriority="high"
             />
 
             {/* Curtain Effect - Bottom Curtain */}
@@ -76,9 +101,9 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               exit={{
                 y: "100%",
                 transition: {
-                  duration: 1.5,
+                  duration: 0.8, // Reduced from 1.5s to 0.8s
                   ease: [0.22, 1, 0.36, 1],
-                  delay: 0.1,
+                  delay: 0.05, // Reduced delay
                 },
               }}
             />

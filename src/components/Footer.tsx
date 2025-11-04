@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Github, Twitter, Linkedin, Mail, ArrowUp } from "lucide-react";
 import { Button } from "./ui/button";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
 import evoxersLogo from "../assets/images/EVOXERS-LOGO.jpg";
 
 interface FooterProps {
@@ -62,10 +63,12 @@ export function Footer({ onNavigate }: FooterProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <img 
-              src={evoxersLogo} 
-              alt="EVOXERS Logo" 
+            <ImageWithFallback
+              src={evoxersLogo}
+              alt="EVOXERS Logo"
               className="h-8 w-auto object-contain mb-2"
+              loading="eager"
+              style={{ maxWidth: '100%', height: 'auto' }}
             />
             <p className="text-muted-foreground">
               Crafting exceptional digital experiences with cutting-edge technology.
