@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Github, Twitter, Linkedin, Mail, ArrowUp } from "lucide-react";
 import { Button } from "./ui/button";
-import evoxersLogo from "../assets/images/EVOXERS-LOGO.png";
+import evoxersLogo from "../assets/images/EVOXERS-LOGO.jpg";
 
 interface FooterProps {
   onNavigate?: (path: string, hash?: string) => void;

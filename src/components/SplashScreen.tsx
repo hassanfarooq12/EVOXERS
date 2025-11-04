@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import logoLogin from "../assets/images/logo-login.png";
+import logoLogin from "../assets/images/logo-login.jpg";
 
 interface SplashScreenProps {
   onComplete: () => void;

@@ -12,9 +12,9 @@ import { Code2, Palette, Video, Target } from "lucide-react";
 // Import Locomotive Scroll hook for smooth scroll initialization
 import { useLocomotiveScroll } from "./hooks/useLocomotiveScroll";
 // Import images properly for Vite
-import graphicDesignWpap3 from "./assets/images/graphic-design-wpap-3.png";
+import graphicDesignWpap3 from "./assets/images/graphic-design-wpap-3.jpg";
 import graphicDesignWpap from "./assets/images/graphic-design-wpap.jpg";
-import graphicDesignWpap2 from "./assets/images/graphic-design-wpap-2.png";
+import graphicDesignWpap2 from "./assets/images/graphic-design-wpap-2.jpg";
 import graphicDesignWpap4 from "./assets/images/graphic-design-wpap-4.jpeg";
 
 export default function App() {

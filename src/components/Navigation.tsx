@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { Menu, Search } from "lucide-react";
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import evoxersLogo from "../assets/images/EVOXERS-LOGO.png";
+import evoxersLogo from "../assets/images/EVOXERS-LOGO.jpg";
 
 interface NavigationProps {
   onNavigate: (path: string, hash?: string) => void;
