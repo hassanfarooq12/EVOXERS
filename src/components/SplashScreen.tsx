@@ -10,16 +10,20 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // INSTANT RELOAD - Minimal delay for smooth transition
+    // Ensure logo is cached immediately
+    const img = new Image();
+    img.src = logoLogin;
+
+    // Fast but visible splash - no lag, no lazy
     const handleComplete = () => {
       setIsVisible(false);
       setTimeout(() => {
         onComplete();
-      }, 150); // Reduced animation delay
+      }, 150);
     };
     
-    // Ultra fast minimum time (200ms) - just enough to show logo
-    const minDisplayTime = 200;
+    // Visible for at least 1200ms on every fresh load/refresh
+    const minDisplayTime = 1200;
     const startTime = Date.now();
     
     const handleLoad = () => {
@@ -31,19 +35,19 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
       }, remaining);
     };
     
-    // If page is already loaded (from cache), show splash very briefly
+    // If page is already loaded (from cache), still show briefly
     if (document.readyState === 'complete') {
       setTimeout(() => {
         handleComplete();
       }, minDisplayTime);
     } else {
-      // Wait for page load, but minimal delay
+      // Wait for load, then respect minimum display
       window.addEventListener('load', handleLoad);
       
-      // Fallback: if page takes too long, show for minimal time anyway
+      // Fallback guard (network stalls): ensure it doesn't hang
       setTimeout(() => {
         handleComplete();
-      }, minDisplayTime + 100);
+      }, minDisplayTime + 1200);
     }
     
     return () => {

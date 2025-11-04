@@ -57,7 +57,7 @@ export function Footer({ onNavigate }: FooterProps) {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand Column */}
           <motion.div
-            className="space-y-4 footer-col"
+            className="space-y-4 footer-col flex flex-col items-start"
             data-segment="e"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -66,10 +66,9 @@ export function Footer({ onNavigate }: FooterProps) {
             <ImageWithFallback
               src={evoxersLogo}
               alt="EVOXERS Logo"
-              className="h-8 w-auto object-contain mb-2"
+              className="h-6 md:h-8 w-auto object-contain mb-2 max-w-[120px] md:max-w-none"
               loading="eager"
               fetchPriority="high"
-              style={{ maxWidth: '100%', height: 'auto' }}
             />
             <p className="text-muted-foreground">
               Crafting exceptional digital experiences with cutting-edge technology.
@@ -95,7 +94,6 @@ export function Footer({ onNavigate }: FooterProps) {
               {[
                 { label: "Portfolio", path: "/portfolio" },
                 { label: "Services", path: "/", hash: "#services" },
-                { label: "Contact", path: "/", hash: "#contact" },
               ].map((item) => {
                 const href = item.hash ? `${item.path}${item.hash}` : item.path;
                 return (
@@ -121,6 +119,53 @@ export function Footer({ onNavigate }: FooterProps) {
               })}
             </ul>
           </motion.div>
+          {/* Services */}
+          <motion.div
+            className="space-y-4 footer-col"
+            data-segment="services"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+          >
+            <h4
+              className="text-sm uppercase tracking-wider text-muted-foreground"
+              style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 600 }}
+            >
+              Services
+            </h4>
+            <ul className="space-y-3">
+              {[
+                { label: "Modern Web Development", path: "/", hash: "#showcase-web" },
+                { label: "Graphic Design", path: "/", hash: "#showcase-design" },
+                { label: "AI Video Creation", path: "/", hash: "#showcase-video" },
+                { label: "Ad Campaigns", path: "/", hash: "#showcase-ads" },
+              ].map((item) => {
+                const href = `${item.path}${item.hash}`;
+                return (
+                  <motion.li
+                    key={item.label}
+                    whileHover={{ x: 4 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
+                    <a
+                      href={href}
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={(event) => {
+                        if (onNavigate) {
+                          event.preventDefault();
+                          onNavigate(item.path, item.hash);
+                        }
+                      }}
+                    >
+                      {item.label}
+                    </a>
+                  </motion.li>
+                );
+              })}
+            </ul>
+          </motion.div>
+
           {/* Contact */}
           <motion.div
             className="space-y-4 footer-col"
@@ -134,11 +179,11 @@ export function Footer({ onNavigate }: FooterProps) {
               className="text-sm uppercase tracking-wider text-muted-foreground"
               style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 600 }}
             >
-              Contact
+              GET IN TOUCH
             </h4>
             <ul className="space-y-3">
               <motion.li whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
-                <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">Get in touch</a>
+                <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</a>
               </motion.li>
               <motion.li whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
                 <a href="mailto:hello@evoxers.com" className="text-muted-foreground hover:text-foreground transition-colors">Email</a>
