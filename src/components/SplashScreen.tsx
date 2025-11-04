@@ -90,6 +90,8 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+              loading="eager"
+              fetchPriority="high"
             />
 
             {/* Curtain Effect - Bottom Curtain */}

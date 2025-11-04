@@ -20,8 +20,8 @@ import graphicDesignWpap4 from "./assets/images/graphic-design-wpap-4.jpeg";
 export default function App() {
   const [effectsEnabled, setEffectsEnabled] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
-  // Load content immediately but keep splash overlay - better UX
-  const [showMainContent, setShowMainContent] = useState(true);
+  // Start with content hidden so splash screen shows properly
+  const [showMainContent, setShowMainContent] = useState(false);
   const [currentPath, setCurrentPath] = useState(() => {
     if (typeof window === "undefined") return "/";
     return window.location.pathname || "/";
