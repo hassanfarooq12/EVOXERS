@@ -61,9 +61,9 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
       style={style} 
       {...rest} 
       onError={handleError} 
-      loading={loading || "eager"} 
+      loading={loading || "auto"} 
       decoding="async"
-      fetchPriority={fetchPriority || "high"}
+      fetchPriority={fetchPriority || "auto"}
     />
   )
 }

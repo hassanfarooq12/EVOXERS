@@ -162,7 +162,7 @@ export default function App() {
                 icon={Palette}
                 reversed
                 id="showcase-design"
-                lazyLoad={false}
+                lazyLoad={true}
               />
             </div>
 
@@ -174,7 +174,7 @@ export default function App() {
                 tags={["AI Video Generation", "Automatic Subtitles", "Voice Synthesis", "Social Media"]}
                 icon={Video}
                 id="showcase-video"
-                lazyLoad={false}
+                lazyLoad={true}
               />
             </div>
 
@@ -187,7 +187,7 @@ export default function App() {
                 icon={Target}
                 reversed
                 id="showcase-ads"
-                lazyLoad={false}
+                lazyLoad={true}
               />
             </div>
 

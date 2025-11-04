@@ -356,7 +356,7 @@ export function Portfolio() {
                                   muted
                                   loop
                                   playsInline
-                                  preload="auto"
+                                  preload="metadata"
                                   poster={project.image}
                                 />
                               ) : (
@@ -364,9 +364,9 @@ export function Portfolio() {
                                   src={project.image}
                                   alt={project.title}
                                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                  loading="eager"
+                                  loading="lazy"
                                   decoding="async"
-                                  fetchPriority="high"
+                                  fetchPriority="low"
                                 />
                               )}
                               {isVideo && !isPlaying && (
