@@ -45,7 +45,7 @@ export function ShowcaseSection({
         <div className={`grid md:grid-cols-2 gap-16 items-center ${reversed ? "md:flex-row-reverse" : ""}`}>
           {/* Content Side */}
           <motion.div
-            className={`space-y-8 ${reversed ? "md:order-2" : ""}`}
+            className={`space-y-8 ${reversed ? "md:order-2" : ""} text-center md:text-left`}
             // REMOVED: style={{ y }} - Locomotive Scroll handles parallax now
           >
             {/* Icon */}
@@ -78,7 +78,7 @@ export function ShowcaseSection({
                   - Bugatti-style elegant float effect
               */}
               <h2 
-                className="text-5xl md:text-6xl mb-4 uppercase"
+                className="text-4xl sm:text-5xl md:text-6xl mb-4 uppercase text-center md:text-left"
                 style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 700 }}
                 data-scroll
                 data-scroll-speed="1.2"
@@ -86,7 +86,7 @@ export function ShowcaseSection({
                 {title}
               </h2>
               <p 
-                className="text-xl text-muted-foreground leading-relaxed"
+                className="text-base sm:text-lg text-muted-foreground leading-relaxed text-center md:text-left"
                 style={{ fontFamily: "'Aeonik', 'Arial', 'Helvetica', sans-serif", fontWeight: 400, lineHeight: 1.6 }}
                 data-scroll
                 data-scroll-speed="0.6"
@@ -97,7 +97,7 @@ export function ShowcaseSection({
 
             {/* Tags */}
             <motion.div
-              className="flex flex-wrap gap-3"
+              className="flex flex-wrap gap-3 justify-center md:justify-start"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: "-100px" }}
