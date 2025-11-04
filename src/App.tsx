@@ -11,6 +11,11 @@ import { SplashScreen } from "./components/SplashScreen";
 import { Code2, Palette, Video, Target } from "lucide-react";
 // Import Locomotive Scroll hook for smooth scroll initialization
 import { useLocomotiveScroll } from "./hooks/useLocomotiveScroll";
+// Import images properly for Vite
+import graphicDesignWpap3 from "./assets/images/graphic-design-wpap-3.png";
+import graphicDesignWpap from "./assets/images/graphic-design-wpap.jpg";
+import graphicDesignWpap2 from "./assets/images/graphic-design-wpap-2.png";
+import graphicDesignWpap4 from "./assets/images/graphic-design-wpap-4.jpeg";
 
 export default function App() {
   const [effectsEnabled, setEffectsEnabled] = useState(true);
@@ -139,7 +144,7 @@ export default function App() {
               <ShowcaseSection
                 title="Modern Web Development"
                 description="Building responsive, fast, and SEO-optimized websites that convert visitors into customers. From simple landing pages to complex web applications, I create digital experiences that drive business growth."
-                imageUrl="/src/assets/images/graphic-design-wpap-3.png?format=webp"
+                imageUrl={graphicDesignWpap3}
                 tags={["React & Next.js", "Responsive Design", "SEO Optimization", "Performance"]}
                 icon={Code2}
                 id="showcase-web"
@@ -150,7 +155,7 @@ export default function App() {
               <ShowcaseSection
                 title="Professional Graphic Design"
                 description="Creating stunning visual identities that make your brand stand out. Complete design solutions including logos, marketing materials, and social media graphics that capture attention and drive engagement."
-                imageUrl="/src/assets/images/graphic-design-wpap.jpg"
+                imageUrl={graphicDesignWpap}
                 tags={["Brand Identity", "Logo Design", "Marketing Materials", "Social Media"]}
                 icon={Palette}
                 reversed
@@ -162,7 +167,7 @@ export default function App() {
               <ShowcaseSection
                 title="AI-Powered Video Creation"
                 description="Revolutionary video creation technology that generates engaging content with automatic subtitles, voiceovers, and dynamic animations. Perfect for social media marketing and content creation at scale."
-                imageUrl="/src/assets/images/graphic-design-wpap-2.png"
+                imageUrl={graphicDesignWpap2}
                 tags={["AI Video Generation", "Automatic Subtitles", "Voice Synthesis", "Social Media"]}
                 icon={Video}
                 id="showcase-video"
@@ -173,7 +178,7 @@ export default function App() {
               <ShowcaseSection
                 title="High-Converting Ad Campaigns"
                 description="Data-driven Facebook and Instagram ad campaigns that generate qualified leads and maximize ROI. Complete campaign management from strategy development to optimization and performance tracking."
-                imageUrl="/src/assets/images/graphic-design-wpap-4.jpeg"
+                imageUrl={graphicDesignWpap4}
                 tags={["Facebook Ads", "Instagram Ads", "Campaign Strategy", "ROI Optimization"]}
                 icon={Target}
                 reversed
