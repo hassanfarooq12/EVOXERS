@@ -1,0 +1,174 @@
+/* CSS Patch - Mobile Slide-Out Navigation */
+/* Mobile-first responsive styles for .evox-side-nav */
+
+:root {
+  --evox-bg: var(--background, #1D1616);
+  --evox-accent: var(--accent, #DB4040);
+  --evox-text: var(--foreground, #EEEEEE);
+  --evox-card: var(--card, #1D1616);
+  --evox-border: var(--border, #BE1616);
+}
+
+.evox-side-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 70;
+  height: 100vh;
+  width: min(92%, 420px);
+  min-width: 72%;
+  background: rgba(29, 22, 22, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid var(--evox-border);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.4), -8px 0 48px rgba(142, 22, 22, 0.1);
+  border-radius: 0 0 0 1.5rem;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.evox-side-nav.open {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.evox-side-nav .evox-side-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.evox-side-nav nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.evox-side-item {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.875rem 1.25rem;
+  background: rgba(29, 22, 22, 0.6);
+  border: 1px solid var(--evox-border);
+  border-radius: 9999px;
+  color: var(--evox-text);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.evox-side-item:hover {
+  background: rgba(219, 64, 64, 0.15);
+  border-color: var(--evox-accent);
+  transform: translateX(-2px);
+}
+
+.evox-side-item:focus {
+  outline: 2px solid var(--evox-accent);
+  outline-offset: 2px;
+  background: rgba(219, 64, 64, 0.2);
+}
+
+.evox-side-item:active {
+  transform: translateX(-1px) scale(0.98);
+}
+
+.evox-side-nav .evox-side-cta {
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+.evox-side-nav .evox-side-cta button,
+.evox-side-nav .evox-side-cta .evox-side-item {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.875rem 1.5rem;
+  background: var(--evox-accent);
+  border: none;
+  border-radius: 9999px;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.evox-side-nav .evox-side-cta button::after,
+.evox-side-nav .evox-side-cta .evox-side-item::after {
+  content: '→';
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.125rem;
+  transition: transform 0.2s ease;
+}
+
+.evox-side-nav .evox-side-cta button:hover,
+.evox-side-nav .evox-side-cta .evox-side-item:hover {
+  background: #C73A3A;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(219, 64, 64, 0.3);
+}
+
+.evox-side-nav .evox-side-cta button:hover::after,
+.evox-side-nav .evox-side-cta .evox-side-item:hover::after {
+  transform: translateY(-50%) translateX(2px);
+}
+
+.evox-side-nav .evox-side-cta button:focus,
+.evox-side-nav .evox-side-cta .evox-side-item:focus {
+  outline: 2px solid var(--evox-accent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(219, 64, 64, 0.2);
+}
+
+.evox-side-nav .evox-side-cta button:active,
+.evox-side-nav .evox-side-cta .evox-side-item:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Very small phones - increase density slightly */
+@media (max-width: 360px) {
+  .evox-side-nav {
+    width: min(95%, 420px);
+    min-width: 75%;
+    padding: 1.25rem;
+  }
+  
+  .evox-side-item {
+    min-height: 44px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9375rem;
+  }
+  
+  .evox-side-nav .evox-side-cta button,
+  .evox-side-nav .evox-side-cta .evox-side-item {
+    min-height: 44px;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9375rem;
+  }
+}
+
+/* Desktop - hide these styles */
+@media (min-width: 768px) {
+  .evox-side-nav {
+    display: none;
+  }
+}
+
