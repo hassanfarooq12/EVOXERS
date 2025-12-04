@@ -1,0 +1,80 @@
+/* CSS Patch - Mobile Responsive Hero/Curtain Image */
+/* Paste this into your main CSS file (e.g., globals.css or index.css) */
+
+/* Container for curtain/hero image - ensures proper mobile display */
+.evox-hero-responsive {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Image element - full-width on mobile, preserves aspect ratio */
+.evox-hero-responsive img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  -webkit-object-fit: contain;
+  -webkit-object-position: center;
+}
+
+/* Mobile-first: full-width with proper aspect ratio */
+@media (max-width: 767px) {
+  .evox-hero-responsive {
+    min-height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .evox-hero-responsive img {
+    width: 100%;
+    max-width: 90vw;
+    height: auto;
+    object-fit: contain;
+    -webkit-object-fit: contain;
+    /* Fallback for older browsers */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+/* Tablet and up - maintain desktop layout */
+@media (min-width: 768px) {
+  .evox-hero-responsive img {
+    max-width: 280px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .evox-hero-responsive img {
+    max-width: 320px;
+  }
+}
+
+/* Curtain animation hook - preserves existing animation */
+.evox-hero-responsive[data-curtain] .evox-hero-responsive img,
+.evox-hero-responsive.curtain-active .evox-hero-responsive img {
+  position: relative;
+  z-index: 20;
+}
+
+/* Vertical centering for tall images on mobile */
+@media (max-width: 767px) and (orientation: portrait) {
+  .evox-hero-responsive {
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .evox-hero-responsive img {
+    max-height: 80vh;
+    width: auto;
+    max-width: 90vw;
+  }
+}
+

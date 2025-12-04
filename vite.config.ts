@@ -49,6 +49,14 @@
         '@': path.resolve(__dirname, './src'),
       },
     },
+    // WebLLM support: Enable WASM and WebGPU
+    optimizeDeps: {
+      // Don't pre-bundle WebLLM - it's loaded dynamically
+      exclude: ['@mlc-ai/web-llm'],
+      esbuildOptions: {
+        target: 'esnext',
+      },
+    },
     build: {
       target: 'esnext',
       outDir: 'dist',
@@ -57,7 +65,13 @@
       rollupOptions: {
         output: {
           manualChunks: undefined, // Don't split chunks for faster loading
-          assetFileNames: 'assets/[name]-[hash:8][extname]', // Shorter hash for faster loading
+          // Ensure WASM files are handled correctly for WebLLM
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name?.endsWith('.wasm')) {
+              return 'assets/[name][extname]';
+            }
+            return 'assets/[name]-[hash:8][extname]';
+          },
           chunkFileNames: 'assets/[name]-[hash:8].js',
           entryFileNames: 'assets/[name]-[hash:8].js',
         },
@@ -66,9 +80,22 @@
       assetsDir: 'assets',
       cssCodeSplit: false, // Single CSS file for faster loading
     },
-    assetsInclude: ['**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.mp4'],
+    assetsInclude: ['**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.mp4', '**/*.wasm'],
     server: {
       port: 3000,
+      host: true, // Allow access from network (mobile devices)
       open: true,
+      strictPort: false, // Allow port to be changed if 3000 is busy
+      // Enable CORS for WebLLM model loading from CDN
+      cors: true,
+      headers: {
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+        'Cross-Origin-Opener-Policy': 'same-origin',
+      },
+    },
+    // Worker configuration for WebLLM
+    worker: {
+      format: 'es',
+      plugins: [react()],
     },
   });

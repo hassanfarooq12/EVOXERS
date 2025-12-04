@@ -1,0 +1,136 @@
+/* CSS Patch - Mobile Search Overlay */
+.evox-search {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1rem;
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateY(-10px);
+}
+
+.evox-search.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.evox-search-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.evox-search-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 2rem;
+  z-index: 1;
+}
+
+.evox-search-wrapper {
+  position: relative;
+  width: 100%;
+  background: rgba(29, 22, 22, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border, #BE1616);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(142, 22, 22, 0.1);
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.evox-search-input {
+  flex: 1;
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--foreground, #EEEEEE);
+  font-size: 1rem;
+  font-weight: 400;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.evox-search-input::placeholder {
+  color: rgba(238, 238, 238, 0.5);
+}
+
+.evox-search-input:focus {
+  outline: none;
+}
+
+.evox-search-cancel {
+  min-width: 64px;
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  color: var(--accent, #DB4040);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+
+.evox-search-cancel:hover {
+  background: rgba(219, 64, 64, 0.1);
+}
+
+.evox-search-cancel:focus {
+  outline: 2px solid var(--accent, #DB4040);
+  outline-offset: 2px;
+  background: rgba(219, 64, 64, 0.15);
+}
+
+.evox-search-cancel:active {
+  transform: scale(0.98);
+}
+
+/* Ensure input stays visible above keyboard */
+@media (max-width: 768px) {
+  .evox-search {
+    align-items: flex-start;
+    padding-top: max(2rem, env(safe-area-inset-top) + 1rem);
+    padding-bottom: max(1rem, env(safe-area-inset-bottom) + 1rem);
+  }
+  
+  .evox-search-container {
+    margin-top: 0;
+    max-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 4rem);
+  }
+  
+  .evox-search-wrapper {
+    position: sticky;
+    top: max(1rem, env(safe-area-inset-top));
+  }
+  
+  .evox-search-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Desktop - hide mobile styles */
+@media (min-width: 769px) {
+  .evox-search {
+    display: none;
+  }
+}
+

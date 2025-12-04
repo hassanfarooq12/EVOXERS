@@ -1,0 +1,191 @@
+/* CSS Patch - Mobile Hero Animation Fix */
+/* Ensures red curtain animation displays correctly on mobile */
+
+.evox-hero-responsive {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+.evox-hero-responsive * {
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.evox-hero-responsive img {
+  width: 100%;
+  max-width: 90vw;
+  height: auto;
+  object-fit: contain;
+  -webkit-object-fit: contain;
+  object-position: center;
+  -webkit-object-position: center;
+  position: relative;
+  z-index: 20;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0) scale(1);
+  -webkit-transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Curtain elements - ensure they're visible and properly layered */
+.evox-hero-responsive [class*="curtain"],
+.evox-hero-responsive [data-curtain] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  background: var(--background, #1D1616);
+}
+
+.evox-hero-responsive [class*="curtain-top"],
+.evox-hero-responsive [data-curtain="top"] {
+  top: 0;
+  height: 50%;
+  transform-origin: top center;
+  -webkit-transform-origin: top center;
+}
+
+.evox-hero-responsive [class*="curtain-bottom"],
+.evox-hero-responsive [data-curtain="bottom"] {
+  bottom: 0;
+  height: 50%;
+  transform-origin: bottom center;
+  -webkit-transform-origin: bottom center;
+}
+
+/* Mobile-first: prevent square cropping */
+@media (max-width: 767px) {
+  .evox-hero-responsive {
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .evox-hero-responsive img {
+    width: 100%;
+    max-width: 85vw;
+    height: auto;
+    max-height: 70vh;
+    object-fit: contain;
+    -webkit-object-fit: contain;
+  }
+  
+  /* Ensure curtains cover full width */
+  .evox-hero-responsive [class*="curtain"],
+  .evox-hero-responsive [data-curtain] {
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+}
+
+/* Portrait orientation */
+@media (max-width: 767px) and (orientation: portrait) {
+  .evox-hero-responsive {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+  
+  .evox-hero-responsive img {
+    max-width: 80vw;
+    max-height: 60vh;
+  }
+}
+
+/* Landscape orientation */
+@media (max-width: 767px) and (orientation: landscape) {
+  .evox-hero-responsive {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+  
+  .evox-hero-responsive img {
+    max-width: 60vw;
+    max-height: 80vh;
+  }
+}
+
+/* Animation hook - existing animation code can toggle this */
+.evox-hero-animate {
+  animation-play-state: running;
+  -webkit-animation-play-state: running;
+}
+
+.evox-hero-animate .evox-hero-responsive [class*="curtain"],
+.evox-hero-animate .evox-hero-responsive [data-curtain] {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+/* Reduced motion fallback */
+@media (prefers-reduced-motion: reduce) {
+  .evox-hero-responsive,
+  .evox-hero-responsive *,
+  .evox-hero-responsive [class*="curtain"],
+  .evox-hero-responsive [data-curtain] {
+    animation: none !important;
+    transition: opacity 0.3s ease !important;
+    transform: none !important;
+  }
+  
+  .evox-hero-responsive {
+    opacity: 1;
+  }
+  
+  .evox-hero-responsive [class*="curtain"],
+  .evox-hero-responsive [data-curtain] {
+    opacity: 0;
+  }
+}
+
+/* Background image alternative (if using background-image instead of <img>) */
+.evox-hero-responsive[data-bg-image] {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+@media (max-width: 767px) {
+  .evox-hero-responsive[data-bg-image] {
+    background-size: contain;
+    background-attachment: scroll;
+  }
+}
+
+/* Prevent overflow clipping */
+.evox-hero-responsive {
+  overflow: visible;
+}
+
+.evox-hero-responsive > * {
+  overflow: visible;
+}
+
+/* Desktop - preserve existing behavior */
+@media (min-width: 768px) {
+  .evox-hero-responsive {
+    height: 100vh;
+  }
+  
+  .evox-hero-responsive img {
+    max-width: 320px;
+  }
+}
+

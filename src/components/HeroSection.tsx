@@ -252,6 +252,43 @@ export function HeroSection({ imageUrl, onPortfolioClick, onSeeFutureClick, enab
   -moz-transition: box-shadow 0.2s ease-in;
   transition: box-shadow 0.2s ease-in;
 }
+
+/* Mobile-specific LightRays styling - match desktop appearance */
+@media (max-width: 767px) {
+  #hero .custom-rays {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+  }
+  
+  #hero .custom-rays canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    object-fit: cover !important;
+  }
+  
+  /* Ensure LightRays container matches desktop positioning */
+  #hero > div[style*="position: absolute"] {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+  }
+}
       `}</style>
     </section>
   );

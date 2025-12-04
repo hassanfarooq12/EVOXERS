@@ -247,3 +247,131 @@ body {
   --accent-cyan: #22d3ee;
 }
 
+/* Mobile-specific fixes and enhancements */
+@media (max-width: 767px) {
+  /* Prevent horizontal overflow */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  /* Ensure all containers respect viewport width */
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Better text wrapping on mobile */
+  h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Ensure buttons have proper touch targets (min 44x44px) */
+  button, a[role="button"], [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent text overflow in cards and containers */
+  p, span, div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Better spacing on mobile */
+  section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Fix for images that might overflow */
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Ensure grid items don't overflow */
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Better form inputs on mobile */
+  input, textarea, select {
+    font-size: 16px; /* Prevents zoom on iOS */
+    min-height: 44px;
+  }
+}
+
+/* Very small screens (phones in portrait) */
+@media (max-width: 360px) {
+  /* Even smaller text sizes for very small screens */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+
+  /* Reduce padding further */
+  section {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Medium spacing for tablets */
+  section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Mobile LightRays styling - match desktop appearance */
+@media (max-width: 767px) {
+  /* Ensure LightRays container fills hero section properly on mobile */
+  #hero .custom-rays,
+  #hero > div[style*="position: absolute"][style*="zIndex"] {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+  }
+  
+  /* Ensure WebGL canvas renders properly on mobile */
+  #hero .custom-rays canvas,
+  #hero canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    object-fit: cover !important;
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+  }
+  
+  /* Match desktop filter and blend mode */
+  #hero .custom-rays {
+    filter: brightness(1.1) contrast(1.05) !important;
+    mix-blend-mode: normal !important;
+    will-change: transform !important;
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+  }
+}
+
