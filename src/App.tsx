@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { DynamicBackground } from "./components/DynamicBackground";
 import { Navigation } from "./components/Navigation";
 import { HeroSection } from "./components/HeroSection";
@@ -33,8 +33,9 @@ export default function App() {
   
   // Determine if we're on home and enable Locomotive accordingly
   const isHome = currentPath === "/" || currentPath === "";
-  // Initialize Locomotive Scroll only when on home route; reacts to route changes
-  const scrollRef = useLocomotiveScroll(isHome);
+  // Initialize Locomotive Scroll only when on home route and content is ready
+  // Pass showMainContent to ensure Locomotive initializes AFTER content is visible
+  const scrollRef = useLocomotiveScroll(isHome, showMainContent);
 
   useEffect(() => {
     // Force dark mode - always apply dark class

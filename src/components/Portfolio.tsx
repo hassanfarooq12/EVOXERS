@@ -53,21 +53,21 @@ export function Portfolio() {
   }, [activeCategory, filteredProjects]);
 
   return (
-    <section id="portfolio" className="relative py-32 px-6">
-      <div className="max-w-7xl mx-auto space-y-16">
-        <div className="text-center md:text-left space-y-6">
-          <span className="px-4 py-1 rounded-full border border-border text-sm uppercase tracking-widest text-muted-foreground/80">
+    <section id="portfolio" className="relative py-16 sm:py-24 md:py-32 px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto space-y-8 sm:space-y-12 md:space-y-16">
+        <div className="text-center md:text-left space-y-4 sm:space-y-6">
+          <span className="px-3 sm:px-4 py-1 rounded-full border border-border text-xs sm:text-sm uppercase tracking-widest text-muted-foreground/80">
             Portfolio
           </span>
           <h2
-            className="text-5xl md:text-6xl font-bold uppercase leading-tight tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase leading-tight tracking-tight break-words"
             style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 700 }}
           >
             Latest Work & Case Studies
           </h2>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-12">
+        <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-12">
             <div className="flex-1 space-y-8">
               {/* Modern Animated Navbar/Tabs */}
               <div className="w-full relative">
@@ -82,15 +82,15 @@ export function Portfolio() {
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#8E1616]/10 via-[#D84040]/10 to-[#8E1616]/10 blur-2xl opacity-50" />
                   
                   {/* Main container */}
-                  <div className="relative bg-gradient-to-br from-background/80 via-muted/20 to-background/80 backdrop-blur-xl rounded-3xl border border-border/50 p-2 shadow-2xl">
-                    <div className="relative flex flex-wrap justify-center gap-2 p-1">
+                  <div className="relative bg-gradient-to-br from-background/80 via-muted/20 to-background/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-border/50 p-1.5 sm:p-2 shadow-2xl">
+                    <div className="relative flex flex-wrap justify-center gap-1.5 sm:gap-2 p-0.5 sm:p-1">
                       {categories.map((category, index) => {
                         const isActive = activeCategory === category.value;
                         return (
                           <motion.button
                             key={category.value}
                             onClick={() => setActiveCategory(category.value as PortfolioCategory | "all")}
-                            className="relative px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-2xl overflow-hidden transition-all duration-300 z-10"
+                            className="relative px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl sm:rounded-2xl overflow-hidden transition-all duration-300 z-10 min-h-[44px] whitespace-nowrap"
                             style={{ fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", fontWeight: 600 }}
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -178,7 +178,7 @@ export function Portfolio() {
               </div>
 
               <motion.div 
-                className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6"
+                className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6"
                 key={activeCategory}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -418,8 +418,8 @@ export function Portfolio() {
               </motion.div>
             </div>
 
-            <aside className="w-full lg:max-w-sm space-y-6">
-              <div className="rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 space-y-6">
+            <aside className="w-full lg:max-w-sm space-y-4 sm:space-y-6 mt-8 lg:mt-0">
+              <div className="rounded-2xl sm:rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-4 sm:p-6 space-y-4 sm:space-y-6">
                 {selectedProject && selectedProject.mediaType !== "video" ? (
                   <>
                     <div className="rounded-lg overflow-hidden bg-muted/20">

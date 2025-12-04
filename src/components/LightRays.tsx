@@ -75,6 +75,25 @@ const LightRays = ({
   const cleanupFunctionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const observerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Detect mobile device and update on resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  // Adjust parameters for mobile to enhance wavy light effect
+  // Desktop values remain unchanged, mobile gets optimized values
+  const adjustedLightSpread = isMobile ? 0.5 : lightSpread; // Tighter spread on mobile = more visible individual rays
+  const adjustedDistortion = isMobile ? 0.15 : distortion; // More distortion on mobile = more pronounced wavy effect
+  const adjustedRayLength = isMobile ? 1.5 : rayLength; // Longer rays on mobile for better visibility
+  const adjustedNoiseAmount = isMobile ? 0.12 : noiseAmount; // More noise for texture on mobile
+  const adjustedFadeDistance = isMobile ? 0.8 : fadeDistance; // Slightly shorter fade on mobile for sharper rays
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -259,15 +278,15 @@ void main() {
         secondaryColor: { value: hexToRgb(secondaryColor) },
         tertiaryColor: { value: hexToRgb(tertiaryColor) },
         raysSpeed: { value: raysSpeed },
-        lightSpread: { value: lightSpread },
-        rayLength: { value: rayLength },
+        lightSpread: { value: adjustedLightSpread }, // Mobile-optimized
+        rayLength: { value: adjustedRayLength }, // Mobile-optimized
         pulsating: { value: pulsating ? 1.0 : 0.0 },
-        fadeDistance: { value: fadeDistance },
+        fadeDistance: { value: adjustedFadeDistance }, // Mobile-optimized
         saturation: { value: saturation },
         mousePos: { value: [0.5, 0.5] },
         mouseInfluence: { value: mouseInfluence },
-        noiseAmount: { value: noiseAmount },
-        distortion: { value: distortion }
+        noiseAmount: { value: adjustedNoiseAmount }, // Mobile-optimized
+        distortion: { value: adjustedDistortion } // Mobile-optimized
       };
       uniformsRef.current = uniforms;
 
@@ -389,7 +408,8 @@ void main() {
     followMouse,
     mouseInfluence,
     noiseAmount,
-    distortion
+    distortion,
+    isMobile // Re-initialize when mobile state changes
   ]);
 
   useEffect(() => {
@@ -398,18 +418,26 @@ void main() {
     const u = uniformsRef.current;
     const renderer = rendererRef.current;
 
+    // Use current mobile state for parameter adjustments
+    const currentIsMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    const mobileLightSpread = currentIsMobile ? 0.5 : lightSpread;
+    const mobileDistortion = currentIsMobile ? 0.15 : distortion;
+    const mobileRayLength = currentIsMobile ? 1.5 : rayLength;
+    const mobileNoiseAmount = currentIsMobile ? 0.12 : noiseAmount;
+    const mobileFadeDistance = currentIsMobile ? 0.8 : fadeDistance;
+    
     u.raysColor.value = hexToRgb(raysColor);
     u.secondaryColor.value = hexToRgb(secondaryColor);
     u.tertiaryColor.value = hexToRgb(tertiaryColor);
     u.raysSpeed.value = raysSpeed;
-    u.lightSpread.value = lightSpread;
-    u.rayLength.value = rayLength;
+    u.lightSpread.value = mobileLightSpread; // Mobile-optimized
+    u.rayLength.value = mobileRayLength; // Mobile-optimized
     u.pulsating.value = pulsating ? 1.0 : 0.0;
-    u.fadeDistance.value = fadeDistance;
+    u.fadeDistance.value = mobileFadeDistance; // Mobile-optimized
     u.saturation.value = saturation;
     u.mouseInfluence.value = mouseInfluence;
-    u.noiseAmount.value = noiseAmount;
-    u.distortion.value = distortion;
+    u.noiseAmount.value = mobileNoiseAmount; // Mobile-optimized
+    u.distortion.value = mobileDistortion; // Mobile-optimized
 
     const { clientWidth: wCSS, clientHeight: hCSS } = containerRef.current;
     const dpr = renderer.dpr;
