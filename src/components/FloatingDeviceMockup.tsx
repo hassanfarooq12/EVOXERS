@@ -115,7 +115,7 @@ export function FloatingDeviceMockup({ children, imageUrl, title, lazyLoad = tru
                 className="w-full h-full object-cover"
                 loading={lazyLoad ? "lazy" : "eager"}
                 decoding="async"
-                fetchPriority={lazyLoad ? "low" : "high"}
+                fetchpriority={lazyLoad ? "low" : "high"}
               />
             ) : (
               children

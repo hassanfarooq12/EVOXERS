@@ -7,6 +7,7 @@
     plugins: [react()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+      preserveSymlinks: false,
       alias: {
         'vaul@1.1.2': 'vaul',
         'sonner@2.0.3': 'sonner',
@@ -46,6 +47,7 @@
         '@radix-ui/react-aspect-ratio@1.1.2': '@radix-ui/react-aspect-ratio',
         '@radix-ui/react-alert-dialog@1.1.6': '@radix-ui/react-alert-dialog',
         '@radix-ui/react-accordion@1.2.3': '@radix-ui/react-accordion',
+        '@use-gesture/react': path.resolve(__dirname, './node_modules/@use-gesture/react'),
         '@': path.resolve(__dirname, './src'),
       },
     },
@@ -53,6 +55,7 @@
     optimizeDeps: {
       // Don't pre-bundle WebLLM - it's loaded dynamically
       exclude: ['@mlc-ai/web-llm'],
+      include: ['@use-gesture/react'],
       esbuildOptions: {
         target: 'esnext',
       },

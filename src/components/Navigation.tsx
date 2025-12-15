@@ -52,6 +52,20 @@ export function Navigation({ onNavigate }: NavigationProps) {
 
   const handleNavigate = (path: string, hash?: string) => {
     setIsOpen(false);
+    
+    // If navigating to home/hero, trigger fast reload without hash to prevent auto-scroll
+    if (path === "/" && (hash === "#hero" || !hash)) {
+      // Reload to home page without hash, then scroll to top
+      if (window.location.pathname === "/" || window.location.pathname === "") {
+        // Already on home, reload without hash and scroll to top
+        window.location.href = "/";
+      } else {
+        // Navigate to home first (without hash)
+        window.location.href = "/";
+      }
+      return;
+    }
+    
     onNavigate(path, hash);
   };
 
@@ -77,14 +91,17 @@ export function Navigation({ onNavigate }: NavigationProps) {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.2 }}
-              onClick={(e) => { e.preventDefault(); onNavigate("/", "#hero"); }}
+              onClick={(e) => { 
+                e.preventDefault(); 
+                handleNavigate("/", "#hero");
+              }}
             >
               <ImageWithFallback
                 src={evoxersLogo}
                 alt="EVOXERS Logo"
                 className="h-8 sm:h-10 w-auto object-contain"
                 loading="eager"
-                fetchPriority="high"
+                fetchpriority="high"
               />
             </motion.a>
 
@@ -103,7 +120,12 @@ export function Navigation({ onNavigate }: NavigationProps) {
                     whileHover={{ y: -2 }}
                     onClick={(event) => {
                       event.preventDefault();
-                      handleNavigate(link.path, link.hash);
+                      // Special handling for Home button - trigger reload
+                      if (link.label === "Home" && link.path === "/" && link.hash === "#hero") {
+                        handleNavigate("/", "#hero");
+                      } else {
+                        handleNavigate(link.path, link.hash);
+                      }
                     }}
                   >
                     {link.label}
@@ -179,9 +201,6 @@ export function Navigation({ onNavigate }: NavigationProps) {
                   );
                 })}
               </nav>
-              <div className="mt-auto pt-4 sm:pt-6">
-                <Button className="w-full min-h-[44px] text-sm sm:text-base" onClick={(e) => { e.preventDefault(); handleNavigate('/portfolio'); }}>View Portfolio</Button>
-              </div>
             </motion.aside>
           </>
         )}

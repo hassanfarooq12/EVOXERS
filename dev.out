@@ -1,0 +1,18 @@
+
+> Modern Website Showcase Design@0.1.0 dev
+> vite --host 0.0.0.0 --port 5173
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mVite[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+[33mPRO FEATURES[0m are enabled for free until [33mMon Nov 24 2025[0m. [36mhttps://console-ninja.com/pro[0m
+
+
+  VITE v6.3.5  ready in 1468 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.100.211:5173/
+3:27:32 PM [vite] (client) hmr update /src/components/LightRays.tsx
+3:27:32 PM [vite] (client) hmr update /src/components/Portfolio.tsx
+3:27:32 PM [vite] (client) page reload index.html
+3:27:32 PM [vite] (client) page reload build/index.html
+3:27:32 PM [vite] (client) hmr update /src/components/Portfolio.tsx, /src/components/SearchCommand.tsx
+3:27:32 PM [vite] (client) page reload dist/index.html

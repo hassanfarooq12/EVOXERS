@@ -156,7 +156,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
                   }
                 }}
                 loading="eager"
-                fetchPriority="high"
+                fetchpriority="high"
                 decoding="sync"
               />
 

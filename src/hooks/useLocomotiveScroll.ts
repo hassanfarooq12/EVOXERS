@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import LocomotiveScroll from 'locomotive-scroll';
 
 /**
@@ -141,7 +141,30 @@ export function useLocomotiveScroll(enabled: boolean = true, contentReady: boole
     };
   }, [enabled, contentReady]);
 
-  // Return the ref to be attached to scroll container
-  return scrollRef;
+  const scrollTo = useCallback(
+    (
+      target: HTMLElement | string,
+      options: { offset?: number; duration?: number } = {}
+    ) => {
+      const node =
+        typeof target === 'string'
+          ? document.querySelector(target)
+          : target;
+      if (!node) return;
+
+      if (locomotiveScrollRef.current) {
+        locomotiveScrollRef.current.scrollTo(node as HTMLElement, {
+          offset: options.offset ?? 0,
+          duration: options.duration ?? 800
+        });
+      } else if (node instanceof HTMLElement) {
+        node.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    },
+    []
+  );
+
+  // Return the ref and a helper scroll function
+  return { scrollRef, scrollTo };
 }
 

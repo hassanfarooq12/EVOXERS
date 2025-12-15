@@ -68,7 +68,7 @@ export function Footer({ onNavigate }: FooterProps) {
               alt="EVOXERS Logo"
               className="h-6 md:h-8 w-auto object-contain mb-2 max-w-[120px] md:max-w-none"
               loading="eager"
-              fetchPriority="high"
+              fetchpriority="high"
             />
             <p className="text-muted-foreground">
               Crafting exceptional digital experiences with cutting-edge technology.
@@ -104,11 +104,18 @@ export function Footer({ onNavigate }: FooterProps) {
                   >
                     <a
                       href={href}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                       onClick={(event) => {
+                        event.preventDefault();
                         if (onNavigate) {
-                          event.preventDefault();
                           onNavigate(item.path, item.hash);
+                        } else {
+                          // Fallback: direct navigation if onNavigate is not provided
+                          if (item.hash) {
+                            window.location.href = `${item.path}${item.hash}`;
+                          } else {
+                            window.location.href = item.path;
+                          }
                         }
                       }}
                     >
@@ -183,7 +190,14 @@ export function Footer({ onNavigate }: FooterProps) {
             </h4>
             <ul className="space-y-3">
               <motion.li whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
-                <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</a>
+                <a 
+                  href="https://www.instagram.com/evoxers_/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Contact
+                </a>
               </motion.li>
               <motion.li whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
                 <a href="mailto:hello@evoxers.com" className="text-muted-foreground hover:text-foreground transition-colors">Email</a>

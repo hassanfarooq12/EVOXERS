@@ -10,7 +10,7 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
     setDidError(true)
   }
 
-  const { src, alt, style, className, loading, fetchPriority, ...rest } = props
+  const { src, alt, style, className, loading, fetchpriority, ...rest } = props
 
   // Generate optimized srcset for responsive images
   const generateSrcSet = (originalSrc: string | undefined) => {
@@ -48,7 +48,7 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
       style={style}
     >
       <div className="flex items-center justify-center w-full h-full">
-        <img src={ERROR_IMG_SRC} alt="Error loading image" {...rest} data-original-url={src} loading="eager" decoding="async" fetchPriority="high" />
+        <img src={ERROR_IMG_SRC} alt="Error loading image" {...rest} data-original-url={src} loading="eager" decoding="async" fetchpriority="high" />
       </div>
     </div>
   ) : (
@@ -63,7 +63,7 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
       onError={handleError} 
       loading={loading || "auto"} 
       decoding="async"
-      fetchPriority={fetchPriority || "auto"}
+      fetchpriority={fetchpriority || "auto"}
     />
   )
 }

@@ -35,7 +35,7 @@ export default function App() {
   const isHome = currentPath === "/" || currentPath === "";
   // Initialize Locomotive Scroll only when on home route and content is ready
   // Pass showMainContent to ensure Locomotive initializes AFTER content is visible
-  const scrollRef = useLocomotiveScroll(isHome, showMainContent);
+  const { scrollRef, scrollTo } = useLocomotiveScroll(isHome, showMainContent);
 
   useEffect(() => {
     // Force dark mode - always apply dark class
@@ -68,33 +68,71 @@ export default function App() {
     const normalizedHash = hash || "";
     const fullPath = normalizedHash ? `${normalizedPath}${normalizedHash}` : normalizedPath;
 
+    // Update state first to trigger re-render immediately
+    setCurrentPath(normalizedPath);
+    setCurrentHash(normalizedHash);
+
+    // Then update URL
     if (window.location.pathname !== normalizedPath || window.location.hash !== normalizedHash) {
       window.history.pushState({}, "", fullPath);
     }
 
-    setCurrentPath(normalizedPath);
-    setCurrentHash(normalizedHash);
+    // Force immediate scroll to top for portfolio route
+    if (normalizedPath === "/portfolio") {
+      window.scrollTo({ top: 0, behavior: "auto" });
+      // Also ensure DOM is ready and scroll again after a brief delay
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
   }, []);
+
+  const scrollToSection = useCallback(
+    (hash: string) => {
+      if (!hash) return;
+      const id = hash.replace("#", "");
+      const target = document.getElementById(id);
+      if (!target) return;
+      scrollTo(target, { offset: 0, duration: 900 });
+    },
+    [scrollTo]
+  );
 
   useEffect(() => {
     if (!showMainContent) return;
 
     if (currentPath === "/") {
       if (currentHash) {
-        const id = currentHash.replace("#", "");
-        window.requestAnimationFrame(() => {
-          const target = document.getElementById(id);
-          if (target) {
-            target.scrollIntoView({ behavior: "smooth" });
-          }
-        });
+        // Scroll to section when hash is present (e.g., clicking Contact button)
+        requestAnimationFrame(() => scrollToSection(currentHash));
+        setTimeout(() => scrollToSection(currentHash), 150);
       } else {
+        // No hash, ensure we're at top (e.g., after home button reload)
         window.scrollTo({ top: 0, behavior: "auto" });
+        // Clear any hash from URL if present
+        if (window.location.hash) {
+          window.history.replaceState(null, "", window.location.pathname);
+        }
+      }
+    } else if (currentPath === "/portfolio") {
+      // When navigating to portfolio page, ensure immediate scroll to top
+      // Multiple attempts to ensure it works on all devices
+      window.scrollTo({ top: 0, behavior: "auto" });
+      
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      // Also try to scroll to portfolio section if hash exists
+      if (currentHash) {
+        const doScroll = () => scrollToSection(currentHash);
+        setTimeout(doScroll, 80);
+        setTimeout(doScroll, 200);
       }
     } else {
       window.scrollTo({ top: 0, behavior: "auto" });
     }
-  }, [currentPath, currentHash, showMainContent]);
+  }, [currentPath, currentHash, showMainContent, scrollToSection]);
 
   // isHome is computed above
 
@@ -123,6 +161,7 @@ export default function App() {
       */}
       <div
         id="smooth-wrapper"
+        key={currentPath}
         ref={isHome ? scrollRef : undefined}
         {...(isHome ? { "data-scroll-container": true } : {})}
         className="relative min-h-screen"
@@ -202,15 +241,15 @@ export default function App() {
           </>
         ) : (
           <>
-            <div data-scroll-section>
+            <div>
               <Portfolio />
             </div>
 
-            <div data-scroll-section id="contact">
+            <div id="contact">
               <Footer onNavigate={handleNavigate} />
             </div>
 
-            <div data-scroll-section>
+            <div>
               <Watermark />
             </div>
           </>
