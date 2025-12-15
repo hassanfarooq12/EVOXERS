@@ -22,7 +22,7 @@ export function HeroSection({ imageUrl, onPortfolioClick, onSeeFutureClick, enab
     }
     const subject = encodeURIComponent('I want to join the revolution');
     const body = encodeURIComponent("Hi EVOXERS team,\n\nI'm interested in transforming my digital presence. Let's talk!\n\n—");
-    window.location.href = `mailto:hello@evoxers.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:info@evoxers.com?subject=${subject}&body=${body}`;
   };
 
   const handleSeeFuture = () => {

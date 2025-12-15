@@ -2173,3 +2173,28 @@ body {
 }
 
 /* Production-ready footer column styles */
+
+/* Global cursor pointer for all clickable elements */
+a[href],
+button:not(:disabled),
+[role="button"]:not(:disabled),
+[onClick],
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+/* Ensure logos with onClick have pointer cursor */
+a[href] img,
+a[href] svg,
+button img,
+button svg,
+[onClick] img,
+[onClick] svg {
+  cursor: pointer !important;
+}
+
+/* Make sure non-clickable elements don't have pointer */
+img:not([onClick]):not(a img),
+svg:not([onClick]):not(a svg):not(button svg) {
+  cursor: default;
+}

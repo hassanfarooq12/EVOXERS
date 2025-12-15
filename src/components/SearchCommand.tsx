@@ -48,7 +48,7 @@ export function SearchCommand({ open, onOpenChange, onNavigate }: SearchCommandP
   };
 
   const handleEmail = () => {
-    window.location.href = "mailto:hello@evoxers.com";
+    window.location.href = "mailto:info@evoxers.com";
     onOpenChange(false);
   };
 
@@ -250,7 +250,7 @@ export function SearchCommand({ open, onOpenChange, onNavigate }: SearchCommandP
                       <Mail className="w-4 h-4 text-muted-foreground/50 group-aria-selected:text-foreground shrink-0" />
                       <div className="flex flex-col">
                         <span className="text-sm font-medium">Send Email</span>
-                        <span className="text-xs text-muted-foreground/40">hello@evoxers.com</span>
+                        <span className="text-xs text-muted-foreground/40">info@evoxers.com</span>
                       </div>
                     </Command.Item>
                   </Command.Group>

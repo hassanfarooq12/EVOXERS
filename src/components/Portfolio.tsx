@@ -145,7 +145,7 @@ export function Portfolio() {
               <motion.button
                 key={category.value}
                 onClick={() => setActiveCategory(category.value as PortfolioCategory | "all")}
-                className="relative px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl sm:rounded-2xl overflow-hidden transition-all duration-300 min-h-[44px] whitespace-nowrap"
+                className="relative px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl sm:rounded-2xl overflow-hidden transition-all duration-300 min-h-[44px] whitespace-nowrap cursor-pointer"
                 style={{ 
                   fontFamily: "'Josefin Sans', 'Arial', 'Helvetica', sans-serif", 
                   fontWeight: 600,
@@ -240,7 +240,7 @@ export function Portfolio() {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#8E1616] to-[#D84040] text-sm font-semibold text-white hover:opacity-90 transition"
+                          className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#8E1616] to-[#D84040] text-sm font-semibold text-white hover:opacity-90 transition cursor-pointer"
                         >
                           Visit Site
                         </a>

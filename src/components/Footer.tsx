@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Github, Twitter, Linkedin, Mail, ArrowUp } from "lucide-react";
+import { Github, Facebook, Instagram, Mail, ArrowUp } from "lucide-react";
+import { SiUpwork } from "react-icons/si";
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import evoxersLogo from "../assets/images/EVOXERS-LOGO.png";
@@ -35,9 +36,10 @@ export function Footer({ onNavigate }: FooterProps) {
 
   const socialLinks = [
     { icon: Github, href: "https://github.com/", label: "GitHub" },
-    { icon: Twitter, href: "https://x.com/", label: "Twitter" },
-    { icon: Linkedin, href: "https://linkedin.com/", label: "LinkedIn" },
-    { icon: Mail, href: "mailto:hello@evoxers.com", label: "Email" },
+    { icon: Facebook, href: "https://www.facebook.com/share/1KFP8psiT9/?mibextid=wwXIfr", label: "Facebook" },
+    { icon: Instagram, href: "https://www.instagram.com/evoxers_/", label: "Instagram" },
+    { icon: SiUpwork, href: "https://www.upwork.com/freelancers/~012d392249c7f96ed2?companyReference=1997999235598837897&mp_source=share", label: "Upwork" },
+    { icon: Mail, href: "mailto:info@evoxers.com", label: "Email" },
   ];
 
   return (
@@ -183,7 +185,7 @@ export function Footer({ onNavigate }: FooterProps) {
                   >
                     <a
                       href={href}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                       onClick={(event) => {
                         if (onNavigate) {
                           event.preventDefault();
@@ -217,16 +219,16 @@ export function Footer({ onNavigate }: FooterProps) {
             <ul className="space-y-3">
               <motion.li whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
                 <a 
-                  href="https://www.instagram.com/evoxers_/" 
+                  href="https://form.evoxers.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                 >
                   Contact
                 </a>
               </motion.li>
               <motion.li whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
-                <a href="mailto:hello@evoxers.com" className="text-muted-foreground hover:text-foreground transition-colors">Email</a>
+                <a href="mailto:info@evoxers.com" className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer">Email</a>
               </motion.li>
             </ul>
           </motion.div>
@@ -274,7 +276,7 @@ export function Footer({ onNavigate }: FooterProps) {
         {showScrollToTop && (
           <motion.button
             onClick={scrollToTop}
-            className="fixed bottom-8 right-8 p-4 rounded-full bg-foreground text-background shadow-lg z-50"
+            className="fixed bottom-8 right-8 p-4 rounded-full bg-foreground text-background shadow-lg z-50 cursor-pointer"
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
