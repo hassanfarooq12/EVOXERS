@@ -41,23 +41,49 @@ export function Footer({ onNavigate }: FooterProps) {
   ];
 
   return (
-    <footer ref={footerRef} className="relative border-t border-border mt-32" style={{
-      marginBottom: 0,
-      paddingBottom: 0,
-      position: 'relative',
-      zIndex: 10,
-      background: 'transparent'
-    }}>
-      <div className="footer-content max-w-7xl mx-auto px-6 py-16" style={{
+    <>
+      <style>{`
+        @media (max-width: 767px) {
+          footer.footer-mobile-spacing {
+            margin-top: 2rem !important;
+          }
+          .footer-content-mobile {
+            padding-top: 1.5rem !important;
+            padding-bottom: 1rem !important;
+          }
+          .footer-grid-mobile {
+            gap: 1rem !important;
+            margin-bottom: 1rem !important;
+          }
+          .footer-col-mobile.space-y-4 > * + * {
+            margin-top: 0.5rem !important;
+          }
+          .footer-col-mobile ul.space-y-3 > * + * {
+            margin-top: 0.375rem !important;
+          }
+          .footer-bottom-mobile {
+            gap: 0.75rem !important;
+            padding-top: 0.75rem !important;
+          }
+        }
+      `}</style>
+      <footer ref={footerRef} className="relative border-t border-border mt-32 footer-mobile-spacing" style={{
         marginBottom: 0,
         paddingBottom: 0,
         position: 'relative',
-        zIndex: 10
+        zIndex: 10,
+        background: 'transparent'
       }}>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="footer-content footer-content-mobile max-w-7xl mx-auto px-6 py-16" style={{
+          marginBottom: 0,
+          paddingBottom: 0,
+          position: 'relative',
+          zIndex: 10
+        }}>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 footer-grid-mobile mb-16">
           {/* Brand Column */}
           <motion.div
-            className="space-y-4 footer-col flex flex-col items-start"
+            className="space-y-4 footer-col footer-col-mobile flex flex-col items-start"
             data-segment="e"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -77,7 +103,7 @@ export function Footer({ onNavigate }: FooterProps) {
 
           {/* Quick Links */}
           <motion.div
-            className="space-y-4 footer-col"
+            className="space-y-4 footer-col footer-col-mobile"
             data-segment="vo"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -128,7 +154,7 @@ export function Footer({ onNavigate }: FooterProps) {
           </motion.div>
           {/* Services */}
           <motion.div
-            className="space-y-4 footer-col"
+            className="space-y-4 footer-col footer-col-mobile"
             data-segment="services"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -175,7 +201,7 @@ export function Footer({ onNavigate }: FooterProps) {
 
           {/* Contact */}
           <motion.div
-            className="space-y-4 footer-col"
+            className="space-y-4 footer-col footer-col-mobile"
             data-segment="xer"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -206,8 +232,8 @@ export function Footer({ onNavigate }: FooterProps) {
           </motion.div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-border footer-col" data-segment="s" style={{ marginBottom: 0, paddingBottom: 0 }}>
+          {/* Bottom Bar */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 footer-bottom-mobile pt-8 border-t border-border footer-col" data-segment="s" style={{ marginBottom: 0, paddingBottom: 0 }}>
           <motion.p
             className="text-sm text-muted-foreground"
             initial={{ opacity: 0 }}
@@ -260,6 +286,7 @@ export function Footer({ onNavigate }: FooterProps) {
           </motion.button>
         )}
       </AnimatePresence>
-    </footer>
+      </footer>
+    </>
   );
 }

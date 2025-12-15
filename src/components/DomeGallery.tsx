@@ -168,7 +168,6 @@ function DomeGallerySphere({
   const inertiaRAF = useRef<number | null>(null);
   const transformFrameRef = useRef<number | null>(null);
   const pendingTransformRef = useRef<{ x: number; y: number } | null>(null);
-  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const openItemDimsRef = useRef<{ naturalW: number; naturalH: number; wantsResize: boolean }>({
     naturalW: 1,
     naturalH: 1,
@@ -247,14 +246,6 @@ function DomeGallerySphere({
         overlay.style.top = `${frameR.top - mainR.top}px`;
       }
 
-      // Position close button if present
-      if (closeButtonRef.current) {
-        const finalOverlayRect = overlay.getBoundingClientRect();
-        closeButtonRef.current.style.top = `${finalOverlayRect.top + 12}px`;
-        closeButtonRef.current.style.right = `${window.innerWidth - finalOverlayRect.right + 12}px`;
-        closeButtonRef.current.style.left = 'auto';
-        closeButtonRef.current.style.opacity = '1';
-      }
     },
     []
   );
@@ -268,16 +259,6 @@ function DomeGallerySphere({
     const parent = el.parentElement as HTMLElement;
     const overlay = viewerRef.current?.querySelector('.enlarge') as HTMLElement | null;
     if (!overlay) return;
-
-    // Remove close button
-    if (closeButtonRef.current) {
-      closeButtonRef.current.remove();
-      closeButtonRef.current = null;
-    }
-
-    // Remove close button
-    const closeBtn = viewerRef.current?.querySelector('.dg-close-button') as HTMLElement | null;
-    if (closeBtn) closeBtn.remove();
 
     const refDiv = parent.querySelector('.item__image--reference') as HTMLElement | null;
     const originalPos = originalTilePositionRef.current;
@@ -1329,51 +1310,10 @@ function DomeGallerySphere({
     let naturalW = 1;
     let naturalH = 1;
 
-    // Create close button - positioned outside overlay to avoid clipping
-    const closeButton = document.createElement('button');
-    closeButton.innerHTML = '×';
-    closeButton.className = 'dg-close-button';
-    closeButton.setAttribute('aria-label', 'Close preview');
-    closeButton.style.cssText = `
-      position: fixed;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      font-size: 30px;
-      font-weight: bold;
-      line-height: 1;
-      cursor: pointer;
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-      backdrop-filter: blur(4px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      pointer-events: auto;
-      opacity: 0;
-    `;
-    closeButton.onmouseenter = () => {
-      closeButton.style.background = 'rgba(220, 38, 38, 0.95)';
-      closeButton.style.borderColor = 'rgba(255, 255, 255, 0.6)';
-      closeButton.style.transform = 'scale(1.1)';
-    };
-    closeButton.onmouseleave = () => {
-      closeButton.style.background = 'rgba(0, 0, 0, 0.8)';
-      closeButton.style.borderColor = 'rgba(255, 255, 255, 0.4)';
-      closeButton.style.transform = 'scale(1)';
-    };
-    closeButton.onclick = (e) => {
-      e.stopPropagation();
-      e.preventDefault();
+    // Add click handler to overlay to close on click anywhere
+    overlay.onclick = () => {
       closePreview();
     };
-    // Append to viewerRef instead of overlay to ensure it's always visible
-    closeButtonRef.current = closeButton;
-    viewerRef.current!.appendChild(closeButton);
 
     if (itemType === 'video') {
       const video = document.createElement('video');
@@ -1550,15 +1490,6 @@ function DomeGallerySphere({
         pointer-events: auto !important;
       }
       
-      /* Close button adjustments for mobile */
-      .dg-close-button {
-        width: 40px !important;
-        height: 40px !important;
-        font-size: 28px !important;
-        top: 8px !important;
-        right: 8px !important;
-        touch-action: auto !important;
-      }
     }
     
     /* Tablet adjustments */

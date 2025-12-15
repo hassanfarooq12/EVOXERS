@@ -2039,6 +2039,16 @@ section[aria-hidden="true"]:has(.watermark-container) {
   overflow: visible !important; /* Ensure text is not clipped */
 }
 
+@media (max-width: 767px) {
+  .watermark-container {
+    min-height: 120px !important;
+    padding: 1vh 0 0 0 !important;
+  }
+  .watermark-text {
+    padding-top: 1vh !important;
+  }
+}
+
 /* Ensure watermark spans never wrap to a second line */
 .watermark-text {
   display: block !important;
