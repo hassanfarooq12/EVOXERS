@@ -181,6 +181,12 @@ function DomeGallerySphere({
   const lastDragEndAt = useRef(0);
   const scrollLockedRef = useRef(false);
   const openItemFromElementRef = useRef<((el: HTMLElement) => void) | null>(null);
+  const imageLoadStatesRef = useRef<Map<string, 'loading' | 'loaded' | 'error'>>(new Map());
+  const visibleItemsRef = useRef<Set<number>>(new Set());
+  const autoRotateRAF = useRef<number | null>(null);
+  const autoRotateEnabledRef = useRef(true);
+  const autoRotatePausedRef = useRef(false);
+  const lastAutoRotateTimeRef = useRef(performance.now());
 
   const lockScroll = useCallback(() => {
     if (scrollLockedRef.current) return;
@@ -287,6 +293,11 @@ function DomeGallerySphere({
       rootRef.current?.removeAttribute('data-enlarging');
       openingRef.current = false;
       unlockScroll();
+      // Resume auto-rotation after closing
+      setTimeout(() => {
+        autoRotatePausedRef.current = false;
+        startAutoRotate();
+      }, 500);
       return;
     }
 
@@ -387,6 +398,9 @@ function DomeGallerySphere({
               if (!draggingRef.current && rootRef.current?.getAttribute('data-enlarging') !== 'true') {
                 document.body.classList.remove('dg-scroll-lock');
               }
+              
+              // Resume auto-rotation after closing animation completes
+              resumeAutoRotate();
             }, 300);
           });
         });
@@ -569,6 +583,69 @@ function DomeGallerySphere({
     applyTransform(rotationRef.current.x, rotationRef.current.y);
   }, [applyTransform]);
 
+  // Preload first 15 images immediately for faster initial load
+  useEffect(() => {
+    const preloadCount = Math.min(15, items.length);
+    for (let i = 0; i < preloadCount; i++) {
+      const item = items[i];
+      if (item.src && item.type === 'image' && !imageLoadStatesRef.current.has(item.src)) {
+        imageLoadStatesRef.current.set(item.src, 'loading');
+        const preloadImg = new Image();
+        preloadImg.onload = () => {
+          imageLoadStatesRef.current.set(item.src, 'loaded');
+        };
+        preloadImg.onerror = () => {
+          imageLoadStatesRef.current.set(item.src, 'error');
+        };
+        preloadImg.src = item.src;
+      }
+    }
+  }, [items]);
+
+  // Progressive image loading with Intersection Observer
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target as HTMLImageElement | HTMLVideoElement;
+            const itemIndex = parseInt(img.getAttribute('data-item-index') || '-1', 10);
+            if (itemIndex >= 0) {
+              visibleItemsRef.current.add(itemIndex);
+            }
+          } else {
+            const img = entry.target as HTMLImageElement | HTMLVideoElement;
+            const itemIndex = parseInt(img.getAttribute('data-item-index') || '-1', 10);
+            if (itemIndex >= 0) {
+              visibleItemsRef.current.delete(itemIndex);
+            }
+          }
+        });
+      },
+      {
+        root: main,
+        rootMargin: '100%', // Start loading when 100% away from viewport (aggressive preload)
+        threshold: 0.01
+      }
+    );
+
+    // Observe all images/videos after a short delay to let initial render complete
+    const timeoutId = setTimeout(() => {
+      const images = main.querySelectorAll('img, video');
+      images.forEach((img) => observer.observe(img));
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      const images = main.querySelectorAll('img, video');
+      images.forEach((img) => observer.unobserve(img));
+      observer.disconnect();
+    };
+  }, [items]);
+
   useEffect(() => {
     const onResize = () => {
       const overlay = viewerRef.current?.querySelector('.enlarge') as HTMLElement | null;
@@ -586,6 +663,60 @@ function DomeGallerySphere({
       inertiaRAF.current = null;
     }
   }, []);
+
+  // Auto-rotation: slow continuous rotation like Earth
+  const startAutoRotate = useCallback(() => {
+    if (autoRotateRAF.current) return; // Already running
+    if (!autoRotateEnabledRef.current) return;
+    if (focusedElRef.current) return; // Don't rotate when image is open
+
+    const ROTATION_SPEED = 0.15; // degrees per frame (very slow, like Earth)
+    const TARGET_FPS = 60;
+    const DEG_PER_SEC = ROTATION_SPEED * TARGET_FPS; // ~9 degrees per second
+
+    const animate = (currentTime: number) => {
+      if (!autoRotateEnabledRef.current || autoRotatePausedRef.current || focusedElRef.current) {
+        autoRotateRAF.current = null;
+        return;
+      }
+
+      const deltaTime = currentTime - lastAutoRotateTimeRef.current;
+      lastAutoRotateTimeRef.current = currentTime;
+
+      // Calculate rotation based on time for smooth, consistent speed
+      const deltaDeg = (DEG_PER_SEC * deltaTime) / 1000;
+      
+      rotationRef.current.y = wrapAngleSigned(rotationRef.current.y + deltaDeg);
+      applyTransform(rotationRef.current.x, rotationRef.current.y, true);
+
+      autoRotateRAF.current = requestAnimationFrame(animate);
+    };
+
+    lastAutoRotateTimeRef.current = performance.now();
+    autoRotateRAF.current = requestAnimationFrame(animate);
+  }, [applyTransform]);
+
+  const stopAutoRotate = useCallback(() => {
+    if (autoRotateRAF.current) {
+      cancelAnimationFrame(autoRotateRAF.current);
+      autoRotateRAF.current = null;
+    }
+  }, []);
+
+  const pauseAutoRotate = useCallback(() => {
+    autoRotatePausedRef.current = true;
+    stopAutoRotate();
+  }, [stopAutoRotate]);
+
+  const resumeAutoRotate = useCallback(() => {
+    autoRotatePausedRef.current = false;
+    // Resume after a short delay
+    setTimeout(() => {
+      if (!autoRotatePausedRef.current && !focusedElRef.current) {
+        startAutoRotate();
+      }
+    }, 2000); // Resume after 2 seconds of no interaction
+  }, [startAutoRotate]);
 
   const startInertia = useCallback(
     (vx: number, vy: number) => {
@@ -634,12 +765,28 @@ function DomeGallerySphere({
   useEffect(() => {
     return () => {
       stopInertia();
+      stopAutoRotate();
       if (transformFrameRef.current) {
         cancelAnimationFrame(transformFrameRef.current);
         transformFrameRef.current = null;
       }
     };
-  }, [stopInertia]);
+  }, [stopInertia, stopAutoRotate]);
+
+  // Start auto-rotation when component mounts
+  useEffect(() => {
+    // Small delay to let initial render complete
+    const timeoutId = setTimeout(() => {
+      if (!focusedElRef.current) {
+        startAutoRotate();
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timeoutId);
+      stopAutoRotate();
+    };
+  }, [startAutoRotate, stopAutoRotate]);
 
   useGesture(
     {
@@ -648,6 +795,7 @@ function DomeGallerySphere({
         if (typeof window !== 'undefined' && window.innerWidth < 768) return;
         if (focusedElRef.current) return;
 
+        pauseAutoRotate();
         stopInertia();
         if (rootRef.current) {
           rootRef.current.setAttribute('data-dragging', 'true');
@@ -813,6 +961,9 @@ function DomeGallerySphere({
           if (movedRef.current) lastDragEndAt.current = performance.now();
 
           movedRef.current = false;
+          
+          // Resume auto-rotation after user interaction
+          resumeAutoRotate();
         }
       }
     },
@@ -846,6 +997,7 @@ function DomeGallerySphere({
       // Track which image was touched for potential tap handling
       touchedImageEl = target.closest('.item__image') as HTMLElement | null;
 
+      pauseAutoRotate();
       stopInertia();
       touchActive = true;
       hasMoved = false;
@@ -916,6 +1068,10 @@ function DomeGallerySphere({
       touchedImageEl = null;
       hasMoved = false;
       unlockScroll();
+      
+      // Resume auto-rotation after touch interaction
+      resumeAutoRotate();
+      
       e.preventDefault();
     };
 
@@ -956,6 +1112,7 @@ function DomeGallerySphere({
       const target = e.target as HTMLElement;
       if (target.closest('.item__image')) return;
 
+      pauseAutoRotate();
       stopInertia();
       isPointerDown = true;
       activePointerId = e.pointerId;
@@ -1040,6 +1197,9 @@ function DomeGallerySphere({
 
       unlockScroll();
 
+      // Resume auto-rotation after pointer interaction
+      resumeAutoRotate();
+
       try {
         main.releasePointerCapture(e.pointerId);
       } catch {
@@ -1101,6 +1261,8 @@ function DomeGallerySphere({
     openingRef.current = true;
     openStartedAtRef.current = performance.now();
 
+    // Pause auto-rotation when opening an image
+    pauseAutoRotate();
     lockScroll();
 
     const parent = el.parentElement as HTMLElement;
@@ -1519,7 +1681,8 @@ function DomeGallerySphere({
                         loop={false}
                         playsInline
                         autoPlay={false}
-                        preload="metadata"
+                        preload="none"
+                        data-item-index={i}
                         style={{
                           backfaceVisibility: 'hidden',
                           filter: `var(--image-filter, ${grayscale ? 'grayscale(1)' : 'none'})`,
@@ -1527,19 +1690,63 @@ function DomeGallerySphere({
                         }}
                       />
                     ) : (
-                      <img
-                        src={it.src}
-                        draggable={false}
-                        alt={it.alt}
-                        loading="lazy"
-                        decoding="async"
-                        fetchpriority="low"
-                        className="w-full h-full object-cover pointer-events-none"
-                        style={{
-                          backfaceVisibility: 'hidden',
-                          filter: `var(--image-filter, ${grayscale ? 'grayscale(1)' : 'none'})`
-                        }}
-                      />
+                      <>
+                        {/* Loading placeholder - shows while image loads */}
+                        <div
+                          className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900"
+                          data-placeholder={`placeholder-${i}`}
+                          style={{
+                            zIndex: 1,
+                            transition: 'opacity 0.3s ease-in-out'
+                          }}
+                        />
+                        <img
+                          src={it.src}
+                          draggable={false}
+                          alt={it.alt}
+                          loading={i < 20 ? "eager" : "lazy"}
+                          decoding="async"
+                          fetchpriority={i < 10 ? "high" : i < 20 ? "auto" : "low"}
+                          data-item-index={i}
+                          className="w-full h-full object-cover pointer-events-none"
+                          style={{
+                            backfaceVisibility: 'hidden',
+                            filter: `var(--image-filter, ${grayscale ? 'grayscale(1)' : 'none'})`,
+                            opacity: 0,
+                            transition: 'opacity 0.3s ease-in-out',
+                            position: 'relative',
+                            zIndex: 2
+                          }}
+                          onLoad={(e) => {
+                            const img = e.currentTarget;
+                            img.style.opacity = '1';
+                            const placeholder = img.parentElement?.querySelector(`[data-placeholder="placeholder-${i}"]`) as HTMLElement;
+                            if (placeholder) {
+                              placeholder.style.opacity = '0';
+                              setTimeout(() => {
+                                if (placeholder.parentElement) {
+                                  placeholder.style.display = 'none';
+                                }
+                              }, 300);
+                            }
+                            imageLoadStatesRef.current.set(it.src, 'loaded');
+                          }}
+                          onError={(e) => {
+                            const img = e.currentTarget;
+                            img.style.opacity = '1';
+                            const placeholder = img.parentElement?.querySelector(`[data-placeholder="placeholder-${i}"]`) as HTMLElement;
+                            if (placeholder) {
+                              placeholder.style.opacity = '0';
+                              setTimeout(() => {
+                                if (placeholder.parentElement) {
+                                  placeholder.style.display = 'none';
+                                }
+                              }, 300);
+                            }
+                            imageLoadStatesRef.current.set(it.src, 'error');
+                          }}
+                        />
+                      </>
                     )}
                   </div>
                 </div>
@@ -1751,6 +1958,9 @@ function DomeGalleryMobile({
       border: 1px solid rgba(255,255,255,0.08);
       box-shadow: 0 10px 30px rgba(0,0,0,.25);
     }
+    .dg-mobile-card {
+      position: relative;
+    }
     .dg-mobile-card > img, .dg-mobile-card > video {
       width: 100%;
       height: 100%;
@@ -1758,6 +1968,10 @@ function DomeGalleryMobile({
       object-fit: cover;
       filter: ${grayscale ? 'grayscale(1)' : 'none'};
       background: #000;
+    }
+    .dg-mobile-card > img {
+      position: relative;
+      z-index: 2;
     }
     .dg-mobile-modal {
       position: fixed;
@@ -1865,9 +2079,58 @@ function DomeGalleryMobile({
                 aria-label={m.alt || (m.type === 'video' ? 'Open video' : 'Open image')}
               >
                 {m.type === 'video' ? (
-                  <video src={m.src} poster={m.poster} muted playsInline preload="metadata" />
+                  <video src={m.src} poster={m.poster} muted playsInline preload="none" />
                 ) : (
-                  <img src={m.src} alt={m.alt} loading="lazy" decoding="async" />
+                  <>
+                    {/* Loading placeholder for mobile */}
+                    <div
+                      className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900"
+                      style={{
+                        zIndex: 1,
+                        transition: 'opacity 0.3s ease-in-out'
+                      }}
+                      data-mobile-placeholder={`mobile-${idx}`}
+                    />
+                    <img
+                      src={m.src}
+                      alt={m.alt}
+                      loading={idx < 3 ? "eager" : "lazy"}
+                      decoding="async"
+                      fetchpriority={idx < 3 ? "high" : "low"}
+                      style={{
+                        opacity: 0,
+                        transition: 'opacity 0.3s ease-in-out',
+                        position: 'relative',
+                        zIndex: 2
+                      }}
+                      onLoad={(e) => {
+                        const img = e.currentTarget;
+                        img.style.opacity = '1';
+                        const placeholder = img.parentElement?.querySelector(`[data-mobile-placeholder="mobile-${idx}"]`) as HTMLElement;
+                        if (placeholder) {
+                          placeholder.style.opacity = '0';
+                          setTimeout(() => {
+                            if (placeholder.parentElement) {
+                              placeholder.style.display = 'none';
+                            }
+                          }, 300);
+                        }
+                      }}
+                      onError={(e) => {
+                        const img = e.currentTarget;
+                        img.style.opacity = '1';
+                        const placeholder = img.parentElement?.querySelector(`[data-mobile-placeholder="mobile-${idx}"]`) as HTMLElement;
+                        if (placeholder) {
+                          placeholder.style.opacity = '0';
+                          setTimeout(() => {
+                            if (placeholder.parentElement) {
+                              placeholder.style.display = 'none';
+                            }
+                          }, 300);
+                        }
+                      }}
+                    />
+                  </>
                 )}
               </button>
             ))}
